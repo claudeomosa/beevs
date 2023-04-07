@@ -3,10 +3,18 @@ defmodule Beevs.Accounts.User do
   import Ecto.Changeset
 
   schema "users" do
-    field :email, :string
-    field :password, :string, virtual: true, redact: true
-    field :hashed_password, :string, redact: true
-    field :confirmed_at, :naive_datetime
+    field(:email, :string)
+    field(:password, :string, virtual: true, redact: true)
+    field(:first_name, :string)
+    field(:last_name, :string)
+    field(:username, :string)
+    field(:avatar, :string)
+
+    field(:job, :string, default: "project_manager")
+    # add validate_job_options to validate the job field of save user info changeset
+
+    field(:hashed_password, :string, redact: true)
+    field(:confirmed_at, :naive_datetime)
 
     timestamps()
   end
@@ -36,7 +44,7 @@ defmodule Beevs.Accounts.User do
   """
   def registration_changeset(user, attrs, opts \\ []) do
     user
-    |> cast(attrs, [:email, :password])
+    |> cast(attrs, [:email, :password, :first_name, :last_name])
     |> validate_email(opts)
     |> validate_password(opts)
   end
