@@ -30,7 +30,8 @@ defmodule BeevsWeb.UserRegistrationLive do
         <.error :if={@check_errors}>
           Oops, something went wrong! Please check the errors below.
         </.error>
-
+        <.input field={@form[:first_name]} type="text" label="First name" required />
+        <.input field={@form[:last_name]} type="text" label="Last name" required />
         <.input field={@form[:email]} type="email" label="Email" required />
         <.input field={@form[:password]} type="password" label="Password" required />
 
