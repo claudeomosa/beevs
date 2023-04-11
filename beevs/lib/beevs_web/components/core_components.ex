@@ -577,6 +577,26 @@ defmodule BeevsWeb.CoreComponents do
     """
   end
 
+  @doc """
+  Renders a nav link.
+  """
+  attr :navigate, :any, required: true
+  slot :inner_block, required: true
+
+  def navlink(assigns) do
+    ~H"""
+    <.link
+      href={@navigate}
+      phx-click={@navigate && "navigate"}
+      class={[
+        "text-[1.5rem] mx-6 leading-6 font-semibold hover:text-zinc-700 flex items-center gap-2  dark:hover:bg-slate-400 hover:bg-[#cddada] p-2 rounded"
+      ]}
+    >
+      <%= render_slot(@inner_block) %>
+    </.link>
+    """
+  end
+
   ## JS Commands
 
   def show(js \\ %JS{}, selector) do
