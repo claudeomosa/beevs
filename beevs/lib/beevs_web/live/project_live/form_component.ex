@@ -9,7 +9,9 @@ defmodule BeevsWeb.ProjectLive.FormComponent do
     <div>
       <.header>
         <%= @title %>
-        <:subtitle>Use this form to manage project records in your database.</:subtitle>
+        <:subtitle>
+          Use this form to manage project records in your database. <%= @user_id %>
+        </:subtitle>
       </.header>
 
       <.simple_form
@@ -20,6 +22,7 @@ defmodule BeevsWeb.ProjectLive.FormComponent do
         phx-submit="save"
       >
         <.input field={@form[:project_name]} type="text" label="Project name" />
+        <.input field={@form[:user_id]} type="hidden" value={@user_id} />
         <:actions>
           <.button phx-disable-with="Saving...">Save Project</.button>
         </:actions>
@@ -68,6 +71,8 @@ defmodule BeevsWeb.ProjectLive.FormComponent do
   end
 
   defp save_project(socket, :new, project_params) do
+    IO.inspect(project_params, label: "project_params")
+
     case WorkSpaces.create_project(project_params) do
       {:ok, project} ->
         notify_parent({:saved, project})

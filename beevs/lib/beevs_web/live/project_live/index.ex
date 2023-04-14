@@ -17,6 +17,7 @@ defmodule BeevsWeb.ProjectLive.Index do
   defp apply_action(socket, :edit, %{"id" => id}) do
     socket
     |> assign(:page_title, "Edit Project")
+    |> assign(:user_id, socket.assigns.current_user.id)
     |> assign(:project, WorkSpaces.get_project!(id))
   end
 
@@ -24,6 +25,8 @@ defmodule BeevsWeb.ProjectLive.Index do
     socket
     |> assign(:page_title, "New Project")
     |> assign(:project, %Project{})
+    |> assign(:user_id, socket.assigns.current_user.id)
+    |> IO.inspect(label: "socket")
   end
 
   defp apply_action(socket, :index, _params) do
