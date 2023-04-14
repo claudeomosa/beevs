@@ -6,9 +6,21 @@ defmodule BeevsWeb.UserSettingsLive do
   def render(assigns) do
     ~H"""
     <.header class="text-center">
-      Account Settings
+      <span class="text-4xl">Account Settings</span>
       <:subtitle>Manage your account email address and password settings</:subtitle>
     </.header>
+
+    <div class="flex justify-between items-center px-6">
+      <.header class="text-left">
+        <%= String.capitalize(@current_user.first_name) %> <%= String.capitalize(
+          @current_user.last_name
+        ) %>
+        <:subtitle>@<%= @current_user.username %></:subtitle>
+      </.header>
+      <.header class="text-right">
+        <:subtitle><%= String.capitalize(@current_user.job) %></:subtitle>
+      </.header>
+    </div>
 
     <div class="space-y-12 divide-y">
       <div>
@@ -93,12 +105,14 @@ defmodule BeevsWeb.UserSettingsLive do
 
     socket =
       socket
+      |> assign(:current_user, user)
       |> assign(:current_password, nil)
       |> assign(:email_form_current_password, nil)
       |> assign(:current_email, user.email)
       |> assign(:email_form, to_form(email_changeset))
       |> assign(:password_form, to_form(password_changeset))
       |> assign(:trigger_submit, false)
+      |> IO.inspect()
 
     {:ok, socket}
   end
