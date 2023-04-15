@@ -11,10 +11,10 @@
     <script defer phx-track-static type="text/javascript" src={~p"/assets/app.js"}>
     </script>
   </head>
-  <body class="bg-[#e0e1dd] dark:bg-[#212529] antialiased dark:text-[#e0e1dd]">
+  <body class="bg-[#fff] dark:bg-[#212529] antialiased dark:text-[#e0e1dd]">
     <%= if @current_user do %>
       <main class="sm:flex">
-        <nav class="sm:w-[18%] items-center dark:bg-[#1b263b] h-screen bg-[#ecf8f8]">
+        <nav class="sm:w-[18%] items-center dark:bg-[#1b263b] h-screen bg-slate-200">
           <div class="profile-photo mt-10 ">
             <%= if @current_user.avatar do %>
               <img
@@ -51,7 +51,7 @@
 
           <ul class="flex flex-col gap-4 ">
             <li>
-              <.navlink navigate={~p"/"}>
+              <.navlink navigate={~p"/projects"}>
                 <svg
                   fill="none"
                   stroke="currentColor"
@@ -195,10 +195,9 @@
             </li>
           </ul>
         </nav>
-        <section class="w-full">
-          <h5>inner section</h5>
+        <div class="w-full">
           <%= @inner_content %>
-        </section>
+        </div>
       </main>
     <% else %>
       <ul class="relative z-10 flex items-center gap-4 px-4 sm:px-6 lg:px-8 justify-end">
