@@ -6,7 +6,11 @@ defmodule BeevsWeb.ProjectLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, stream(socket, :projects, WorkSpaces.list_projects())}
+    projects = Enum.filter(WorkSpaces.list_projects(), fn project ->
+      project.user_id == socket.assigns.current_user.id
+    end)
+    IO.inspect(projects, label: "projects")
+    {:ok, stream(socket, :projects, projects)}
   end
 
   @impl true
