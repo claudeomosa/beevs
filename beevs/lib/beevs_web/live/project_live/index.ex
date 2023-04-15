@@ -9,7 +9,6 @@ defmodule BeevsWeb.ProjectLive.Index do
     projects = Enum.filter(WorkSpaces.list_projects(), fn project ->
       project.user_id == socket.assigns.current_user.id
     end)
-    IO.inspect(projects, label: "projects")
     {:ok, stream(socket, :projects, projects)}
   end
 
