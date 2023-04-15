@@ -531,6 +531,26 @@ defmodule BeevsWeb.CoreComponents do
     """
   end
 
+
+  @doc """
+  Renders a project card
+  """
+
+
+
+  def project_card(assigns) do
+    assigns =
+      with %{cards: %Phoenix.LiveView.LiveStream{}} <- assigns do
+        assign(assigns, card_id: assigns.card_id || fn {id, _item} -> id end)
+      end
+      ~H"""
+         <div href={@navigate} class="flex flex-col max-w-[30vw] justify-between px-8 py-10 shadow h-60 dark:bg-[#1b263b] bg-[#ecf8f8] rounded hover:shadow-black">
+            <%= render_slot(@inner_block) %>
+         </div>
+      """
+  end
+
+
   @doc """
   Renders a data list.
 
@@ -592,7 +612,7 @@ defmodule BeevsWeb.CoreComponents do
     ~H"""
     <.link
       href={@navigate}
-      phx-click={@navigate && "navigate"}
+      navigate={@navigate}
       class={[
         "text-[1.5rem] mx-6 leading-6 font-semibold hover:text-zinc-700 flex items-center gap-2  dark:hover:bg-slate-400 hover:bg-[#cddada] p-2 rounded"
       ]}
