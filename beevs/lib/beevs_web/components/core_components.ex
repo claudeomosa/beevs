@@ -53,7 +53,7 @@ defmodule BeevsWeb.CoreComponents do
       phx-remove={hide_modal(@id)}
       class="relative z-50 hidden"
     >
-      <div id={"#{@id}-bg"} class="fixed inset-0 bg-zinc-50/90 transition-opacity" aria-hidden="true" />
+      <div id={"#{@id}-bg"} class="fixed inset-0 bg-slate-200 dark:bg-[#1b263b] bg-opacity-75 dark:bg-opacity-75 transition-opacity" aria-hidden="true" />
       <div
         class="fixed inset-0 overflow-y-auto"
         aria-labelledby={"#{@id}-title"}
@@ -62,15 +62,15 @@ defmodule BeevsWeb.CoreComponents do
         aria-modal="true"
         tabindex="0"
       >
-        <div class="flex min-h-full items-center justify-center">
-          <div class="w-full max-w-3xl p-4 sm:p-6 lg:py-8">
+        <div class="flex min-h-full items-center justify-center ">
+          <div class="w-full max-w-3xl p-4 sm:p-6 lg:py-8 ">
             <.focus_wrap
               id={"#{@id}-container"}
               phx-mounted={@show && show_modal(@id)}
               phx-window-keydown={hide_modal(@on_cancel, @id)}
               phx-key="escape"
               phx-click-away={hide_modal(@on_cancel, @id)}
-              class="hidden relative rounded-2xl bg-white p-14 shadow-lg shadow-zinc-700/10 ring-1 ring-zinc-700/10 transition"
+              class="hidden relative rounded-2xl bg-[#eee] dark:bg-[#2e4059] p-14 shadow-lg shadow-zinc-700/10 ring-1 ring-zinc-700/10 transition"
             >
               <div class="absolute top-6 right-5">
                 <button
@@ -82,7 +82,7 @@ defmodule BeevsWeb.CoreComponents do
                   <Heroicons.x_mark solid class="h-5 w-5 stroke-current" />
                 </button>
               </div>
-              <div id={"#{@id}-content"}>
+              <div id={"#{@id}-content"} class="dark:bg-[#2e4059]" >
                 <header :if={@title != []}>
                   <h1 id={"#{@id}-title"} class="text-lg font-semibold leading-8 text-zinc-800">
                     <%= render_slot(@title) %>
@@ -227,7 +227,7 @@ defmodule BeevsWeb.CoreComponents do
   def simple_form(assigns) do
     ~H"""
     <.form :let={f} for={@for} as={@as} {@rest}>
-      <div class="space-y-8 bg-[#e0e1dd] dark:bg-[#212529] mt-10">
+      <div class="space-y-8 bg-[#eee] dark:bg-[#2e4059] mt-10">
         <%= render_slot(@inner_block, f) %>
         <div :for={action <- @actions} class="mt-2 flex items-center justify-between gap-6">
           <%= render_slot(action, f) %>
@@ -366,7 +366,7 @@ defmodule BeevsWeb.CoreComponents do
           "mt-2 block min-h-[6rem] w-full rounded-lg border-zinc-300 py-[7px] px-[11px]",
           "text-zinc-900 focus:border-zinc-400 focus:outline-none focus:ring-4 focus:ring-zinc-800/5 sm:text-sm sm:leading-6",
           "phx-no-feedback:border-zinc-300 phx-no-feedback:focus:border-zinc-400 phx-no-feedback:focus:ring-zinc-800/5",
-          "border-zinc-300 focus:border-zinc-400 focus:ring-zinc-800/5",
+          "border-zinc-300 focus:border-zinc-400 focus:ring-zinc-800/5 resize-none",
           @errors != [] && "border-rose-400 focus:border-rose-400 focus:ring-rose-400/10"
         ]}
         {@rest}
@@ -535,8 +535,6 @@ defmodule BeevsWeb.CoreComponents do
   @doc """
   Renders a project card
   """
-
-
 
   def project_card(assigns) do
     assigns =
