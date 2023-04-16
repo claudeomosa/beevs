@@ -53,7 +53,11 @@ defmodule BeevsWeb.CoreComponents do
       phx-remove={hide_modal(@id)}
       class="relative z-50 hidden"
     >
-      <div id={"#{@id}-bg"} class="fixed inset-0 bg-slate-200 dark:bg-[#1b263b] bg-opacity-75 dark:bg-opacity-75 transition-opacity" aria-hidden="true" />
+      <div
+        id={"#{@id}-bg"}
+        class="fixed inset-0 bg-slate-200 dark:bg-[#1b263b] bg-opacity-75 dark:bg-opacity-75 transition-opacity"
+        aria-hidden="true"
+      />
       <div
         class="fixed inset-0 overflow-y-auto"
         aria-labelledby={"#{@id}-title"}
@@ -82,7 +86,7 @@ defmodule BeevsWeb.CoreComponents do
                   <Heroicons.x_mark solid class="h-5 w-5 stroke-current" />
                 </button>
               </div>
-              <div id={"#{@id}-content"} class="dark:bg-[#2e4059]" >
+              <div id={"#{@id}-content"} class="dark:bg-[#2e4059]">
                 <header :if={@title != []}>
                   <h1 id={"#{@id}-title"} class="text-lg font-semibold leading-8 text-zinc-800">
                     <%= render_slot(@title) %>
@@ -531,7 +535,6 @@ defmodule BeevsWeb.CoreComponents do
     """
   end
 
-
   @doc """
   Renders a project card
   """
@@ -541,13 +544,16 @@ defmodule BeevsWeb.CoreComponents do
       with %{cards: %Phoenix.LiveView.LiveStream{}} <- assigns do
         assign(assigns, card_id: assigns.card_id || fn {id, _item} -> id end)
       end
-      ~H"""
-         <div href={@navigate} class="flex flex-col max-w-[30vw] justify-between px-8 py-10 shadow h-60 dark:bg-[#1b263b] bg-[#ecf8f8] rounded hover:shadow-black">
-            <%= render_slot(@inner_block) %>
-         </div>
-      """
-  end
 
+    ~H"""
+    <div
+      href={@navigate}
+      class="flex flex-col max-w-[30vw] justify-between px-8 py-10 shadow h-60 dark:bg-[#1b263b] bg-[#ecf8f8] rounded hover:shadow-black"
+    >
+      <%= render_slot(@inner_block) %>
+    </div>
+    """
+  end
 
   @doc """
   Renders a data list.

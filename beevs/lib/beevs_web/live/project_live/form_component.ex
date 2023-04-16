@@ -17,7 +17,6 @@ defmodule BeevsWeb.ProjectLive.FormComponent do
         phx-target={@myself}
         phx-change="validate"
         phx-submit="save"
-
       >
         <.input field={@form[:project_name]} type="text" label="Project name" />
         <.input field={@form[:project_description]} type="textarea" label="Project description" />
