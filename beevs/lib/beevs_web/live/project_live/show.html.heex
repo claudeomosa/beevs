@@ -7,10 +7,19 @@
     </.link>
   </:actions>
 </.header>
-
+<hr class="my-6" />
 <.list>
   <:item title="Project name"><%= @project.project_name %></:item>
 </.list>
+
+<.header>
+  Listing Tasks
+  <:actions>
+    <.link patch={~p"/tasks/new"}>
+      <.button>New Task</.button>
+    </.link>
+  </:actions>
+</.header>
 
 <.back navigate={~p"/projects"}>Back to projects</.back>
 

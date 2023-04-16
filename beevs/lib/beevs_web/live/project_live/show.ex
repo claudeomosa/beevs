@@ -10,10 +10,13 @@ defmodule BeevsWeb.ProjectLive.Show do
 
   @impl true
   def handle_params(%{"id" => id}, _, socket) do
+    project_tasks = Enum.filter(WorkSpaces.list_tasks(), fn task -> task.project_id == id end)
+
     {:noreply,
      socket
      |> assign(:page_title, page_title(socket.assigns.live_action))
-     |> assign(:project, WorkSpaces.get_project!(id))}
+     |> assign(:project, WorkSpaces.get_project!(id))
+     |> assign(:project_tasks, project_tasks)}
   end
 
   defp page_title(:show), do: "Show Project"
