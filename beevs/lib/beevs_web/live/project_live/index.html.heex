@@ -9,7 +9,7 @@
 
 <div id="projects" class="grid gap-3 grid-cols-1 sm:grid-cols-3 mt-8" phx-update="stream">
   <%= for {id, project} <- @streams.projects  do %>
-    <.project_card navigate={~p"/projects/#{project.id}"}>
+    <.project_card href={~p"/projects/#{project.id}"}>
       <h5 class="font-semibold text-3xl font-mono">
         <%= String.capitalize(project.project_name) %>
       </h5>
@@ -20,9 +20,9 @@
       <div class="flex justify-between">
         <div>
           <div class="sr-only">
-            <.link navigate={~p"/projects/#{project}"}>Show</.link>
+            <.link navigate={~p"/projects/#{project.id}"}>Show</.link>
           </div>
-          <.link patch={~p"/projects/#{project}"} class="flex items-center">
+          <.link href={~p"/projects/#{project.id}"} class="flex items-center">
             <svg
               fill="none"
               stroke="currentColor"
@@ -47,6 +47,7 @@
             phx-click={JS.push("delete", value: %{id: project.id}) |> hide("##{id}")}
             data-confirm="Are you sure?"
             class="flex items-center"
+            href={~p"/projects"}
           >
             <svg
               fill="none"
