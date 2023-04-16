@@ -1,6 +1,6 @@
 <.header>
-  Project <%= @project.id %>
-  <:subtitle>This is a project record from your database.</:subtitle>
+  <%= String.capitalize(@project.project_name) %>
+  <:subtitle><%= String.capitalize(@project.project_description) %></:subtitle>
   <:actions>
     <.link patch={~p"/projects/#{@project}/show/edit"} phx-click={JS.push_focus()}>
       <.button>Edit project</.button>
