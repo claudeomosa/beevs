@@ -5,6 +5,7 @@ defmodule Beevs.WorkSpaces.Project do
   schema "projects" do
     field :project_name, :string
     belongs_to :user, Beevs.Accounts.User
+    field :project_description, :string
 
     timestamps()
   end
@@ -12,8 +13,10 @@ defmodule Beevs.WorkSpaces.Project do
   @doc false
   def changeset(project, attrs) do
     project
-    |> cast(attrs, [:project_name, :user_id])
+    |> cast(attrs, [:project_name, :user_id, :project_description])
     |> cast_assoc(:user)
-    |> validate_required([:project_name, :user_id])
+    |> validate_length(:project_name, min: 2, max: 20)
+    |> validate_length(:project_description, min: 2, max: 210)
+    |> validate_required([:project_name, :user_id, :project_description])
   end
 end
