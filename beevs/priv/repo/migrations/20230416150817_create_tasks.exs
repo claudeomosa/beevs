@@ -6,7 +6,7 @@ defmodule Beevs.Repo.Migrations.CreateTasks do
       add :task, :string
       add :assignee, :string
       add :status, :string
-      add :project_id, references(:projects, on_delete: :nothing)
+      add :project_id, references(:projects, on_delete: :delete_all)
 
       timestamps()
     end

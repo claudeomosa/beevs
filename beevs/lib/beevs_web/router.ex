@@ -74,9 +74,10 @@ defmodule BeevsWeb.Router do
 
       live "/projects/:id", ProjectLive.Show, :show
       live "/projects/:id/show/edit", ProjectLive.Show, :edit
+      live "/projects/:id/tasks/new_task", ProjectLive.Show, :new_task
 
       live "/tasks", TaskLive.Index, :index
-      live "/tasks/new", TaskLive.Index, :new
+
       live "/tasks/:id/edit", TaskLive.Index, :edit
 
       live "/tasks/:id", TaskLive.Show, :show

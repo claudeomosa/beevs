@@ -22,6 +22,7 @@ defmodule BeevsWeb.TaskLive.FormComponent do
         <.input field={@form[:task]} type="text" label="Task" />
         <.input field={@form[:assignee]} type="text" label="Assignee" />
         <.input field={@form[:status]} type="text" label="Status" />
+        <.input field={@form[:project_id]} type="hidden" value={@project.id} />
         <:actions>
           <.button phx-disable-with="Saving...">Save Task</.button>
         </:actions>
@@ -69,7 +70,7 @@ defmodule BeevsWeb.TaskLive.FormComponent do
     end
   end
 
-  defp save_task(socket, :new, task_params) do
+  defp save_task(socket, :new_task, task_params) do
     case WorkSpaces.create_task(task_params) do
       {:ok, task} ->
         notify_parent({:saved, task})
