@@ -18,6 +18,37 @@
   </:actions>
 </.header>
 
+<hr class="my-6" />
+
+<.table id="tasks" rows={@project.tasks}>
+  <:col :let={task} label="Task Title">
+    <%= task.task %>
+  </:col>
+  <:col :let={task} label="Task Assignee">
+    <%= task.assignee %>
+  </:col>
+  <:col :let={task} label="Task Status">
+    <%= task.status %>
+  </:col>
+  <:action :let={task}>
+    <div class="sr-only">
+      <.link navigate={~p"/tasks/#{task}"}>Show</.link>
+    </div>
+    <.link patch={~p"/tasks/#{task}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={task}>
+    <.link
+      phx-click={
+        JS.push("delete", value: %{id: task.id})
+        |> hide("##{task.id}")
+      }
+      data-confirm="Are you sure?"
+    >
+      Delete
+    </.link>
+  </:action>
+</.table>
+
 <.back navigate={~p"/projects"}>Back to projects</.back>
 
 <.modal
