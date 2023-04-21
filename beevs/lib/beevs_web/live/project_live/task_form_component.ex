@@ -21,7 +21,19 @@ defmodule BeevsWeb.TaskLive.FormComponent do
       >
         <.input field={@form[:task]} type="text" label="Task" />
         <.input field={@form[:assignee]} type="text" label="Assignee" />
-        <.input field={@form[:status]} type="text" label="Status" />
+        <.input
+          field={@form[:status]}
+          type="select"
+          label="Status"
+          multiple={false}
+          id="task-status"
+          options={[
+            ToDo: "todo",
+            Ongoing: "ongoing",
+            Completed: "completed"
+          ]}
+        >
+        </.input>
         <.input field={@form[:project_id]} type="hidden" value={@project.id} />
         <:actions>
           <.button phx-disable-with="Saving...">Save Task</.button>

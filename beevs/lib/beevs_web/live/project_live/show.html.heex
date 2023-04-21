@@ -7,7 +7,7 @@
     </.link>
   </:actions>
 </.header>
-<hr class="my-6" />
+<hr class="my-6 bg-black dark:bg-white h-[1px] border-none" />
 
 <.header>
   Listing Tasks
@@ -18,17 +18,26 @@
   </:actions>
 </.header>
 
-<hr class="my-6" />
+<hr class="my-6 bg-black dark:bg-white h-[1px] border-none" />
 
 <.table id="tasks" rows={@project.tasks}>
   <:col :let={task} label="Task Title">
-    <%= task.task %>
+    <%= String.capitalize(task.task) %>
   </:col>
   <:col :let={task} label="Task Assignee">
     <%= task.assignee %>
   </:col>
   <:col :let={task} label="Task Status">
-    <%= task.status %>
+    <%= case task.status do %>
+    <% "todo" -> %>
+    <span class="text-red-500">Todo</span>
+    <% "ongoing" -> %>
+    <span class="text-yellow-500">In Progress</span>
+    <% "completed" -> %>
+    <span class="text-green-500">Completed</span>
+    <% _ -> %>
+    <span class="text-gray-500">Unknown</span>
+    <% end %>
   </:col>
   <:action :let={task}>
     <.link patch={~p"/projects/#{@project}/tasks/#{task}/edit"}>Edit</.link>
