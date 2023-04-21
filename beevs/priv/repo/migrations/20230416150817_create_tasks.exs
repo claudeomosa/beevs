@@ -12,6 +12,5 @@ defmodule Beevs.Repo.Migrations.CreateTasks do
     end
 
     create index(:tasks, [:project_id])
-    create unique_index(:tasks, [:project_id, :task])
   end
 end
