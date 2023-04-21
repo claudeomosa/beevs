@@ -31,7 +31,6 @@ defmodule BeevsWeb.ProjectLive.Index do
     |> assign(:page_title, "New Project")
     |> assign(:project, %Project{})
     |> assign(:user_id, socket.assigns.current_user.id)
-    |> IO.inspect(label: "socket")
   end
 
   defp apply_action(socket, :index, _params) do

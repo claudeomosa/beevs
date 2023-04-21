@@ -69,8 +69,6 @@ defmodule BeevsWeb.ProjectLive.FormComponent do
   end
 
   defp save_project(socket, :new, project_params) do
-    IO.inspect(project_params, label: "project_params")
-
     case WorkSpaces.create_project(project_params) do
       {:ok, project} ->
         notify_parent({:saved, project})

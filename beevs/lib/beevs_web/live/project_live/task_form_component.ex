@@ -55,7 +55,7 @@ defmodule BeevsWeb.TaskLive.FormComponent do
     save_task(socket, socket.assigns.action, task_params)
   end
 
-  defp save_task(socket, :edit, task_params) do
+  defp save_task(socket, :edit_task, task_params) do
     case WorkSpaces.update_task(socket.assigns.task, task_params) do
       {:ok, task} ->
         notify_parent({:saved, task})

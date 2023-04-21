@@ -35,7 +35,11 @@ defmodule Beevs.WorkSpaces do
       ** (Ecto.NoResultsError)
 
   """
-  def get_project!(id), do: Repo.get!(Project, id)
+  def get_project!(id) do
+    Project
+    |> Repo.get!(id)
+    |> Repo.preload(:tasks)
+  end
 
   @doc """
   Creates a project.

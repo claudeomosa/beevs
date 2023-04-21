@@ -31,15 +31,12 @@
     <%= task.status %>
   </:col>
   <:action :let={task}>
-    <div class="sr-only">
-      <.link navigate={~p"/tasks/#{task}"}>Show</.link>
-    </div>
-    <.link patch={~p"/tasks/#{task}/edit"}>Edit</.link>
+    <.link patch={~p"/projects/#{@project}/tasks/#{task}/edit"}>Edit</.link>
   </:action>
   <:action :let={task}>
     <.link
       phx-click={
-        JS.push("delete", value: %{id: task.id})
+        JS.push("delete", value: %{task_id: task.id})
         |> hide("##{task.id}")
       }
       data-confirm="Are you sure?"
@@ -69,7 +66,7 @@
 </.modal>
 
 <.modal
-  :if={@live_action == :new_task}
+  :if={@live_action in [:new_task, :edit_task]}
   id="task-modal"
   show
   on_cancel={JS.patch(~p"/projects/#{@project}")}

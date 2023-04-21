@@ -37,4 +37,19 @@ defmodule BeevsWeb.ProjectLive.Show do
     |> assign(:task, %Task{})
     |> assign(:project, WorkSpaces.get_project!(params["id"]))
   end
+
+  defp apply_action(socket, :edit_task, %{"task_id" => task_id}) do
+    socket
+    |> assign(:page_title, "Edit Task")
+    |> assign(:task, WorkSpaces.get_task!(task_id))
+  end
+
+  @impl true
+  def handle_event("delete", %{"task_id" => task_id}, socket) do
+    task = WorkSpaces.get_task!(task_id)
+    {:ok, _} = WorkSpaces.delete_task(task)
+    project = WorkSpaces.get_project!(socket.assigns.project.id)
+
+    {:noreply, socket |> assign(:project, project)}
+  end
 end
