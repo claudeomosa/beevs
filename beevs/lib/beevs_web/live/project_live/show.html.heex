@@ -10,7 +10,55 @@
 <hr class="my-6 bg-black dark:bg-white h-[1px] border-none" />
 
 <.header>
-  Listing Tasks
+  <div class="flex gap-4">
+    <div
+      class="flex items-center hover:cursor-pointer"
+      phx-click="change_tasks_view"
+      phx-value-tasks_view={:table}
+    >
+      <svg
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+        class="w-6 h-6"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M3.375 19.5h17.25m-17.25 0a1.125 1.125 0 01-1.125-1.125M3.375 19.5h7.5c.621 0 1.125-.504 1.125-1.125m-9.75 0V5.625m0 12.75v-1.5c0-.621.504-1.125 1.125-1.125m18.375 2.625V5.625m0 12.75c0 .621-.504 1.125-1.125 1.125m1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125m0 3.75h-7.5A1.125 1.125 0 0112 18.375m9.75-12.75c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125m19.5 0v1.5c0 .621-.504 1.125-1.125 1.125M2.25 5.625v1.5c0 .621.504 1.125 1.125 1.125m0 0h17.25m-17.25 0h7.5c.621 0 1.125.504 1.125 1.125M3.375 8.25c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125m17.25-3.75h-7.5c-.621 0-1.125.504-1.125 1.125m8.625-1.125c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125m-17.25 0h7.5m-7.5 0c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125M12 10.875v-1.5m0 1.5c0 .621-.504 1.125-1.125 1.125M12 10.875c0 .621.504 1.125 1.125 1.125m-2.25 0c.621 0 1.125.504 1.125 1.125M13.125 12h7.5m-7.5 0c-.621 0-1.125.504-1.125 1.125M20.625 12c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125m-17.25 0h7.5M12 14.625v-1.5m0 1.5c0 .621-.504 1.125-1.125 1.125M12 14.625c0 .621.504 1.125 1.125 1.125m-2.25 0c.621 0 1.125.504 1.125 1.125m0 1.5v-1.5m0 0c0-.621.504-1.125 1.125-1.125m0 0h7.5"
+        >
+        </path>
+      </svg>
+      <span class="ml-1">Table</span>
+    </div>
+    <div
+      class="flex items-center hover:cursor-pointer"
+      phx-click="change_tasks_view"
+      phx-value-tasks_view={:kanban}
+    >
+      <svg
+        fill="none"
+        class="w-6 h-6"
+        stroke="currentColor"
+        stroke-width="1.5"
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M2.25 7.125C2.25 6.504 2.754 6 3.375 6h6c.621 0 1.125.504 1.125 1.125v3.75c0 .621-.504 1.125-1.125 1.125h-6a1.125 1.125 0 01-1.125-1.125v-3.75zM14.25 8.625c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125v8.25c0 .621-.504 1.125-1.125 1.125h-5.25a1.125 1.125 0 01-1.125-1.125v-8.25zM3.75 16.125c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125v2.25c0 .621-.504 1.125-1.125 1.125h-5.25a1.125 1.125 0 01-1.125-1.125v-2.25z"
+        >
+        </path>
+      </svg>
+      <span class="ml-1">Kanban</span>
+    </div>
+  </div>
+
   <:actions>
     <.link patch={~p"/projects/#{@project}/tasks/new_task"}>
       <.button>New Task</.button>
@@ -20,7 +68,7 @@
 
 <hr class="my-6 bg-black dark:bg-white h-[1px] border-none" />
 
-<.table id="tasks" rows={@project.tasks}>
+<.table :if={@tasks_view == :table} id="tasks" rows={@project.tasks}>
   <:col :let={task} label="Task Title">
     <%= String.capitalize(task.task) %>
   </:col>
@@ -29,14 +77,14 @@
   </:col>
   <:col :let={task} label="Task Status">
     <%= case task.status do %>
-    <% "todo" -> %>
-    <span class="text-red-500">Todo</span>
-    <% "ongoing" -> %>
-    <span class="text-yellow-500">In Progress</span>
-    <% "completed" -> %>
-    <span class="text-green-500">Completed</span>
-    <% _ -> %>
-    <span class="text-gray-500">Unknown</span>
+      <% "todo" -> %>
+        <span class="text-red-500">Todo</span>
+      <% "ongoing" -> %>
+        <span class="text-yellow-500">In Progress</span>
+      <% "completed" -> %>
+        <span class="text-green-500">Completed</span>
+      <% _ -> %>
+        <span class="text-gray-500">Unknown</span>
     <% end %>
   </:col>
   <:action :let={task}>
@@ -54,6 +102,9 @@
     </.link>
   </:action>
 </.table>
+<%= if @tasks_view == :kanban do %>
+<h1>Kanban</h1>
+<% end %>
 
 <.back navigate={~p"/projects"}>Back to projects</.back>
 

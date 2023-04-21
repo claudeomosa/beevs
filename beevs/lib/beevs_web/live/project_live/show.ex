@@ -17,12 +17,11 @@ defmodule BeevsWeb.ProjectLive.Show do
 
   defp apply_action(socket, :show, params) do
     %{"id" => id} = params
-    project_tasks = Enum.filter(WorkSpaces.list_tasks(), fn task -> task.project_id == id end)
 
     socket
     |> assign(:page_title, "Show Project")
     |> assign(:project, WorkSpaces.get_project!(id))
-    |> assign(:project_tasks, project_tasks)
+    |> assign(tasks_view: :table)
   end
 
   defp apply_action(socket, :edit, %{"id" => id}) do
@@ -51,5 +50,9 @@ defmodule BeevsWeb.ProjectLive.Show do
     project = WorkSpaces.get_project!(socket.assigns.project.id)
 
     {:noreply, socket |> assign(:project, project)}
+  end
+
+  def handle_event("change_tasks_view", %{"tasks_view" => tasks_view}, socket) do
+    {:noreply, socket |> assign(:tasks_view, String.to_atom(tasks_view))}
   end
 end
