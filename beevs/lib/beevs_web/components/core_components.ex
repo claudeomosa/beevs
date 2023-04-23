@@ -557,7 +557,7 @@ defmodule BeevsWeb.CoreComponents do
     ~H"""
     <div
       href={@navigate}
-      class="flex flex-col max-w-[30vw] justify-between px-8 py-10 shadow h-60 dark:bg-[#1b263b] bg-[#ecf8f8] rounded hover:shadow-black"
+      class="flex flex-col h-auto justify-between px-6 py-6 shadow dark:bg-[#1b263b] bg-[#ecf8f8] rounded hover:shadow-black"
     >
       <%= render_slot(@inner_block) %>
     </div>
