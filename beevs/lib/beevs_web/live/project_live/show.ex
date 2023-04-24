@@ -28,6 +28,7 @@ defmodule BeevsWeb.ProjectLive.Show do
     socket
     |> assign(:page_title, "Edit Project")
     |> assign(:project, WorkSpaces.get_project!(id))
+    |> assign(tasks_view: :table)
   end
 
   defp apply_action(socket, :new_task, params) do
@@ -35,6 +36,7 @@ defmodule BeevsWeb.ProjectLive.Show do
     |> assign(:page_title, "New Task")
     |> assign(:task, %Task{})
     |> assign(:project, WorkSpaces.get_project!(params["id"]))
+    |> assign(tasks_view: :table)
   end
 
   defp apply_action(socket, :edit_task, %{"task_id" => task_id}) do
