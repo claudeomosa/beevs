@@ -58,7 +58,11 @@ defmodule Beevs.Accounts do
       ** (Ecto.NoResultsError)
 
   """
-  def get_user!(id), do: Repo.get!(User, id)
+  def get_user!(id) do
+    User
+    |> Repo.get!(id)
+    |> Repo.preload(:projects)
+  end
 
   ## User registration
 

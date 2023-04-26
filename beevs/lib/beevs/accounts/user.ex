@@ -10,6 +10,11 @@ defmodule Beevs.Accounts.User do
     field(:username, :string)
     field(:avatar, :string)
 
+    many_to_many(:projects, Beevs.WorkSpaces.Project,
+      join_through: Beevs.WorkSpaces.ProjectMember,
+      on_replace: :delete
+    )
+
     field(:job, :string, default: "project_manager")
     # add validate_job_options to validate the job field of save user info changeset
 
