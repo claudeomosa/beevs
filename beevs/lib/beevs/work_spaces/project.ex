@@ -3,10 +3,15 @@ defmodule Beevs.WorkSpaces.Project do
   import Ecto.Changeset
 
   schema "projects" do
-    field :project_name, :string
-    belongs_to :user, Beevs.Accounts.User
-    field :project_description, :string
-    has_many :tasks, Beevs.WorkSpaces.Task
+    field(:project_name, :string)
+    belongs_to(:user, Beevs.Accounts.User)
+    field(:project_description, :string)
+    has_many(:tasks, Beevs.WorkSpaces.Task)
+
+    many_to_many(:members, Beevs.Accounts.User,
+      join_through: Beevs.WorkSpaces.ProjectMembers,
+      on_replace: :delete
+    )
 
     timestamps()
   end

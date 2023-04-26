@@ -22,9 +22,20 @@ defmodule BeevsWeb.ProjectLive.FormComponent do
         <.input field={@form[:project_description]} type="textarea" label="Project description" />
         <.input field={@form[:user_id]} type="hidden" value={@user_id} />
         <:actions>
-          <.button phx-disable-with="Saving...">Save Project</.button>
+          <.button phx-disable-with="Saving...">Save Changes</.button>
         </:actions>
       </.simple_form>
+    <%= if @action == :edit do%>
+      <.simple_form for={}>
+        <.input field={@form[:project_name]} type="text" label="Member name" />
+        <:actions>
+          <.button phx-disable-with="Saving...">Add member</.button>
+        </:actions>
+      </.simple_form>
+      <div class="overflow-auto max-h-[35vh]">
+        Members list
+      </div>
+      <% end%>
     </div>
     """
   end

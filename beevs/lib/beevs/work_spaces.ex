@@ -39,6 +39,8 @@ defmodule Beevs.WorkSpaces do
     Project
     |> Repo.get!(id)
     |> Repo.preload(:tasks)
+    |> Repo.preload(:user)
+    |> Repo.preload(:members)
   end
 
   @doc """
