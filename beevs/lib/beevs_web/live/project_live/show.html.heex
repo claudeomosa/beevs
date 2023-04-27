@@ -62,6 +62,12 @@
   </div>
 
   <:actions>
+    <.link patch={~p"/projects/#{@project}/collaborators"}>
+      <.button>Edit Collaborators</.button>
+    </.link>
+  </:actions>
+
+  <:actions>
     <.link patch={~p"/projects/#{@project}/tasks/new_task"}>
       <.button>New Task</.button>
     </.link>
@@ -308,5 +314,22 @@
     task={@task}
     project={@project}
     patch={~p"/projects/#{@project}"}
+  />
+</.modal>
+
+<.modal
+  :if={@live_action == :edit_collaborators}
+  id="collaborators-modal"
+  show
+  on_cancel={JS.patch(~p"/projects/#{@project}")}
+>
+  <.live_component
+    module={BeevsWeb.ProjectLive.CollaboratorsComponent}
+    id={@project.id}
+    title={@page_title}
+    action={@live_action}
+    project={@project}
+    patch={~p"/projects/#{@project}"}
+    after_add_patch={~p"/projects/#{@project}/collaborators"}
   />
 </.modal>

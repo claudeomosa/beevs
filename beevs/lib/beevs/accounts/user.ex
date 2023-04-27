@@ -24,6 +24,13 @@ defmodule Beevs.Accounts.User do
     timestamps()
   end
 
+  def changeset(user, attrs) do
+    user
+    |> cast(attrs, [:email, :password, :first_name, :last_name, :username, :avatar, :job])
+    |> cast_assoc(:projects)
+    |> validate_required([:email, :password, :first_name, :last_name, :username, :avatar, :job])
+  end
+
   @doc """
   A user changeset for registration.
 
@@ -47,9 +54,11 @@ defmodule Beevs.Accounts.User do
       submitting the form), this option can be set to `false`.
       Defaults to `true`.
   """
+
   def registration_changeset(user, attrs, opts \\ []) do
     user
     |> cast(attrs, [:email, :password, :first_name, :last_name, :username])
+    |> cast_assoc(:projects)
     |> validate_email(opts)
     |> validate_password(opts)
   end

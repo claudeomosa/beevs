@@ -1,6 +1,7 @@
 defmodule BeevsWeb.ProjectLive.Index do
   use BeevsWeb, :live_view
 
+  alias Beevs.Accounts
   alias Beevs.WorkSpaces
   alias Beevs.WorkSpaces.Project
 
@@ -37,11 +38,28 @@ defmodule BeevsWeb.ProjectLive.Index do
     socket
     |> assign(:page_title, "Listing Projects")
     |> assign(:project, nil)
+    |> assign(
+      :collaborating_projects,
+      Accounts.get_user!(socket.assigns.current_user.id).projects
+    )
+    |> IO.inspect()
   end
 
   @impl true
-  def handle_info({BeevsWeb.ProjectLive.FormComponent, {:saved, project}}, socket) do
-    {:noreply, stream_insert(socket, :projects, project)}
+  def handle_event("exit_project", %{"collab_project_id" => collab_project_id}, socket) do
+    IO.inspect(collab_project_id, label: "collab_project_id")
+
+    WorkSpaces.delete_project_member(
+      WorkSpaces.get_project!(collab_project_id),
+      socket.assigns.current_user
+    )
+
+    {:noreply,
+     socket
+     |> assign(
+       :collaborating_projects,
+       Accounts.get_user!(socket.assigns.current_user.id).projects
+     )}
   end
 
   @impl true
@@ -50,5 +68,10 @@ defmodule BeevsWeb.ProjectLive.Index do
     {:ok, _} = WorkSpaces.delete_project(project)
 
     {:noreply, stream_delete(socket, :projects, project)}
+  end
+
+  @impl true
+  def handle_info({BeevsWeb.ProjectLive.FormComponent, {:saved, project}}, socket) do
+    {:noreply, stream_insert(socket, :projects, project)}
   end
 end

@@ -12,42 +12,32 @@ defmodule BeevsWeb.ProjectLive.FormComponent do
       </.header>
 
       <.simple_form
-        for={@form}
+        for={@info_form}
         id="project-form"
         phx-target={@myself}
         phx-change="validate"
         phx-submit="save"
       >
-        <.input field={@form[:project_name]} type="text" label="Project name" />
-        <.input field={@form[:project_description]} type="textarea" label="Project description" />
-        <.input field={@form[:user_id]} type="hidden" value={@user_id} />
+        <.input field={@info_form[:project_name]} type="text" label="Project name" />
+        <.input field={@info_form[:project_description]} type="textarea" label="Project description" />
+        <.input field={@info_form[:user_id]} type="hidden" value={@user_id} />
         <:actions>
           <.button phx-disable-with="Saving...">Save Changes</.button>
         </:actions>
       </.simple_form>
-    <%= if @action == :edit do%>
-      <.simple_form for={}>
-        <.input field={@form[:project_name]} type="text" label="Member name" />
-        <:actions>
-          <.button phx-disable-with="Saving...">Add member</.button>
-        </:actions>
-      </.simple_form>
-      <div class="overflow-auto max-h-[35vh]">
-        Members list
-      </div>
-      <% end%>
     </div>
     """
   end
 
   @impl true
   def update(%{project: project} = assigns, socket) do
-    changeset = WorkSpaces.change_project(project)
+    project_changeset = WorkSpaces.change_project(project)
 
     {:ok,
      socket
      |> assign(assigns)
-     |> assign_form(changeset)}
+     |> assign(:info_form, to_form(project_changeset))
+     |> IO.inspect()}
   end
 
   @impl true

@@ -7,8 +7,7 @@ defmodule Beevs.Repo.Migrations.CreateProjectMembers do
       add :user_id, references(:users, on_delete: :nothing), null: false, primary_key: true
     end
 
-    create unique_index(:project_members, [:project_id, :user_id],
-             name: :project_members_project_id_user_id_unique_index
-           )
+    create index(:project_members, [:project_id])
+    create index(:project_members, [:user_id])
   end
 end

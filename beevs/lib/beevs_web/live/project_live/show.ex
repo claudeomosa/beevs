@@ -1,6 +1,7 @@
 defmodule BeevsWeb.ProjectLive.Show do
   use BeevsWeb, :live_view
 
+  alias Beevs.Accounts
   alias Beevs.WorkSpaces
   alias Beevs.WorkSpaces.Task
 
@@ -45,10 +46,25 @@ defmodule BeevsWeb.ProjectLive.Show do
     |> assign(:task, WorkSpaces.get_task!(task_id))
   end
 
+  defp apply_action(socket, :edit_collaborators, %{"id" => id}) do
+    socket
+    |> assign(:page_title, "Edit Collaborators")
+    |> assign(:project, WorkSpaces.get_project!(id))
+    |> assign(tasks_view: :kanban)
+  end
+
   @impl true
   def handle_event("delete", %{"task_id" => task_id}, socket) do
     task = WorkSpaces.get_task!(task_id)
     {:ok, _} = WorkSpaces.delete_task(task)
+    project = WorkSpaces.get_project!(socket.assigns.project.id)
+
+    {:noreply, socket |> assign(:project, project)}
+  end
+
+  @impl true
+  def handle_event("delete_collaborator", %{"member_id" => member_id}, socket) do
+    WorkSpaces.delete_project_member(socket.assigns.project, Accounts.get_user!(member_id))
     project = WorkSpaces.get_project!(socket.assigns.project.id)
 
     {:noreply, socket |> assign(:project, project)}

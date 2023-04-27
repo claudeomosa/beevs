@@ -4,6 +4,7 @@ defmodule Beevs.WorkSpaces do
   """
 
   import Ecto.Query, warn: false
+  alias Beevs.WorkSpaces.ProjectMember
   alias Beevs.Repo
 
   alias Beevs.WorkSpaces.Project
@@ -77,6 +78,41 @@ defmodule Beevs.WorkSpaces do
     project
     |> Project.changeset(attrs)
     |> Repo.update()
+  end
+
+  @doc """
+  Inserts a member into a project.
+
+  ## Examples
+
+      iex> insert_member(project, user)
+      {:ok, %Project{}}
+
+      iex> insert_member(project, user)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def insert_project_member(project, user) do
+    %ProjectMember{}
+    |> ProjectMember.changeset(%{project_id: project.id, user_id: user.id})
+    |> Repo.insert()
+  end
+
+  @doc """
+  Deletes a member from a project.
+
+  ## Examples
+
+      iex> delete_project_member(project, user)
+      {1, nil}
+
+      iex> delete_project_member(project, user)
+      {0, nil}
+  """
+  def delete_project_member(project, user) do
+    Repo.delete_all(
+      from(p in ProjectMember, where: p.project_id == ^project.id and p.user_id == ^user.id)
+    )
   end
 
   @doc """

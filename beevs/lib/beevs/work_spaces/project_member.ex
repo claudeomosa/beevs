@@ -9,8 +9,8 @@ defmodule Beevs.WorkSpaces.ProjectMember do
   end
 
   @doc false
-  def changeset(project_members, attrs) do
-    project_members
+  def changeset(project_member, attrs) do
+    project_member
     |> cast(attrs, [:project_id, :user_id])
     |> cast_assoc(:project)
     |> cast_assoc(:user)
