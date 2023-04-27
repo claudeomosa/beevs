@@ -6,6 +6,7 @@ defmodule Beevs.WorkSpaces.Project do
     field :project_name, :string
     belongs_to :user, Beevs.Accounts.User
     field :project_description, :string
+    has_many :tasks, Beevs.WorkSpaces.Task
 
     timestamps()
   end

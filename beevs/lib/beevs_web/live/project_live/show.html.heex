@@ -7,10 +7,271 @@
     </.link>
   </:actions>
 </.header>
+<hr class="my-6 bg-black dark:bg-white h-[1px] border-none" />
 
-<.list>
-  <:item title="Project name"><%= @project.project_name %></:item>
-</.list>
+<.header>
+  <div class="flex gap-4">
+    <div
+      class="flex items-center hover:cursor-pointer"
+      phx-click="change_tasks_view"
+      phx-value-tasks_view={:table}
+    >
+      <svg
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+        class="w-6 h-6"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M3.375 19.5h17.25m-17.25 0a1.125 1.125 0 01-1.125-1.125M3.375 19.5h7.5c.621 0 1.125-.504 1.125-1.125m-9.75 0V5.625m0 12.75v-1.5c0-.621.504-1.125 1.125-1.125m18.375 2.625V5.625m0 12.75c0 .621-.504 1.125-1.125 1.125m1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125m0 3.75h-7.5A1.125 1.125 0 0112 18.375m9.75-12.75c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125m19.5 0v1.5c0 .621-.504 1.125-1.125 1.125M2.25 5.625v1.5c0 .621.504 1.125 1.125 1.125m0 0h17.25m-17.25 0h7.5c.621 0 1.125.504 1.125 1.125M3.375 8.25c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125m17.25-3.75h-7.5c-.621 0-1.125.504-1.125 1.125m8.625-1.125c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125m-17.25 0h7.5m-7.5 0c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125M12 10.875v-1.5m0 1.5c0 .621-.504 1.125-1.125 1.125M12 10.875c0 .621.504 1.125 1.125 1.125m-2.25 0c.621 0 1.125.504 1.125 1.125M13.125 12h7.5m-7.5 0c-.621 0-1.125.504-1.125 1.125M20.625 12c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125m-17.25 0h7.5M12 14.625v-1.5m0 1.5c0 .621-.504 1.125-1.125 1.125M12 14.625c0 .621.504 1.125 1.125 1.125m-2.25 0c.621 0 1.125.504 1.125 1.125m0 1.5v-1.5m0 0c0-.621.504-1.125 1.125-1.125m0 0h7.5"
+        >
+        </path>
+      </svg>
+      <span class="ml-1">Table</span>
+    </div>
+    <div
+      class="flex items-center hover:cursor-pointer"
+      phx-click="change_tasks_view"
+      phx-value-tasks_view={:kanban}
+    >
+      <svg
+        fill="none"
+        class="w-6 h-6"
+        stroke="currentColor"
+        stroke-width="1.5"
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M2.25 7.125C2.25 6.504 2.754 6 3.375 6h6c.621 0 1.125.504 1.125 1.125v3.75c0 .621-.504 1.125-1.125 1.125h-6a1.125 1.125 0 01-1.125-1.125v-3.75zM14.25 8.625c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125v8.25c0 .621-.504 1.125-1.125 1.125h-5.25a1.125 1.125 0 01-1.125-1.125v-8.25zM3.75 16.125c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125v2.25c0 .621-.504 1.125-1.125 1.125h-5.25a1.125 1.125 0 01-1.125-1.125v-2.25z"
+        >
+        </path>
+      </svg>
+      <span class="ml-1">Kanban</span>
+    </div>
+  </div>
+
+  <:actions>
+    <.link patch={~p"/projects/#{@project}/tasks/new_task"}>
+      <.button>New Task</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<hr class="my-6 bg-black dark:bg-white h-[1px] border-none" />
+
+<.table :if={@tasks_view == :table} id="tasks" rows={@project.tasks}>
+  <:col :let={task} label="Task Title">
+    <%= String.capitalize(task.task) %>
+  </:col>
+  <:col :let={task} label="Task Assignee">
+    <%= task.assignee %>
+  </:col>
+  <:col :let={task} label="Task Status">
+    <%= case task.status do %>
+      <% "todo" -> %>
+        <span class="text-red-500">Todo</span>
+      <% "ongoing" -> %>
+        <span class="text-yellow-500">In Progress</span>
+      <% "completed" -> %>
+        <span class="text-green-500">Completed</span>
+      <% _ -> %>
+        <span class="text-gray-500">Unknown</span>
+    <% end %>
+  </:col>
+  <:action :let={task}>
+    <.link patch={~p"/projects/#{@project}/tasks/#{task}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={task}>
+    <.link
+      phx-click={
+        JS.push("delete", value: %{task_id: task.id})
+        |> hide("##{task.id}")
+      }
+      data-confirm="Are you sure?"
+    >
+      Delete
+    </.link>
+  </:action>
+</.table>
+<%= if @tasks_view == :kanban do %>
+  <div class="grid gap-2 grid-flow-col min-h-[60vh] grid-cols-3" id="drag">
+    <.kanban_board task_status_zone_id="todo">
+      <h1 class="text-center">Todo</h1>
+      <hr />
+      <%= for task <- @project.tasks do %>
+        <.kanban_card :if={task.status == "todo"} id={"task-#{task.id}"} class="border-red-500">
+          <div class="text-black overflow-hidden">
+            <%= String.capitalize(task.task) %>
+          </div>
+          <div class="flex justify-between mt-3">
+            <%= task.assignee %>
+            <div class="flex gap-1">
+              <.link patch={~p"/projects/#{@project}/tasks/#{task}/edit"}>
+                <svg
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg"
+                  aria-hidden="true"
+                  class="w-5 h-5"
+                >
+                  <path d="M5.433 13.917l1.262-3.155A4 4 0 017.58 9.42l6.92-6.918a2.121 2.121 0 013 3l-6.92 6.918c-.383.383-.84.685-1.343.886l-3.154 1.262a.5.5 0 01-.65-.65z">
+                  </path>
+                  <path d="M3.5 5.75c0-.69.56-1.25 1.25-1.25H10A.75.75 0 0010 3H4.75A2.75 2.75 0 002 5.75v9.5A2.75 2.75 0 004.75 18h9.5A2.75 2.75 0 0017 15.25V10a.75.75 0 00-1.5 0v5.25c0 .69-.56 1.25-1.25 1.25h-9.5c-.69 0-1.25-.56-1.25-1.25v-9.5z">
+                  </path>
+                </svg>
+              </.link>
+              <.link
+                phx-click={
+                  JS.push("delete", value: %{task_id: task.id})
+                  |> hide("##{task.id}")
+                }
+                data-confirm="Are you sure?"
+              >
+                <svg
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg"
+                  aria-hidden="true"
+                  class="w-5 h-5"
+                >
+                  <path
+                    clip-rule="evenodd"
+                    fill-rule="evenodd"
+                    d="M8.75 1A2.75 2.75 0 006 3.75v.443c-.795.077-1.584.176-2.365.298a.75.75 0 10.23 1.482l.149-.022.841 10.518A2.75 2.75 0 007.596 19h4.807a2.75 2.75 0 002.742-2.53l.841-10.52.149.023a.75.75 0 00.23-1.482A41.03 41.03 0 0014 4.193V3.75A2.75 2.75 0 0011.25 1h-2.5zM10 4c.84 0 1.673.025 2.5.075V3.75c0-.69-.56-1.25-1.25-1.25h-2.5c-.69 0-1.25.56-1.25 1.25v.325C8.327 4.025 9.16 4 10 4zM8.58 7.72a.75.75 0 00-1.5.06l.3 7.5a.75.75 0 101.5-.06l-.3-7.5zm4.34.06a.75.75 0 10-1.5-.06l-.3 7.5a.75.75 0 101.5.06l.3-7.5z"
+                  >
+                  </path>
+                </svg>
+              </.link>
+            </div>
+          </div>
+        </.kanban_card>
+      <% end %>
+    </.kanban_board>
+
+    <.kanban_board task_status_zone_id="ongoing">
+      <h1 class="text-center">In Progress</h1>
+      <hr />
+      <%= for task <- @project.tasks do %>
+        <.kanban_card
+          :if={task.status == "ongoing"}
+          id={"task-#{task.id}"}
+          class="border-yellow-500"
+        >
+          <div class="text-black overflow-hidden">
+            <%= String.capitalize(task.task) %>
+          </div>
+          <div class="flex justify-between mt-3">
+            <%= task.assignee %>
+            <div class="flex gap-1">
+              <.link patch={~p"/projects/#{@project}/tasks/#{task}/edit"}>
+                <svg
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg"
+                  aria-hidden="true"
+                  class="w-5 h-5"
+                >
+                  <path d="M5.433 13.917l1.262-3.155A4 4 0 017.58 9.42l6.92-6.918a2.121 2.121 0 013 3l-6.92 6.918c-.383.383-.84.685-1.343.886l-3.154 1.262a.5.5 0 01-.65-.65z">
+                  </path>
+                  <path d="M3.5 5.75c0-.69.56-1.25 1.25-1.25H10A.75.75 0 0010 3H4.75A2.75 2.75 0 002 5.75v9.5A2.75 2.75 0 004.75 18h9.5A2.75 2.75 0 0017 15.25V10a.75.75 0 00-1.5 0v5.25c0 .69-.56 1.25-1.25 1.25h-9.5c-.69 0-1.25-.56-1.25-1.25v-9.5z">
+                  </path>
+                </svg>
+              </.link>
+              <.link
+                phx-click={
+                  JS.push("delete", value: %{task_id: task.id})
+                  |> hide("##{task.id}")
+                }
+                data-confirm="Are you sure?"
+              >
+                <svg
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg"
+                  aria-hidden="true"
+                  class="w-5 h-5"
+                >
+                  <path
+                    clip-rule="evenodd"
+                    fill-rule="evenodd"
+                    d="M8.75 1A2.75 2.75 0 006 3.75v.443c-.795.077-1.584.176-2.365.298a.75.75 0 10.23 1.482l.149-.022.841 10.518A2.75 2.75 0 007.596 19h4.807a2.75 2.75 0 002.742-2.53l.841-10.52.149.023a.75.75 0 00.23-1.482A41.03 41.03 0 0014 4.193V3.75A2.75 2.75 0 0011.25 1h-2.5zM10 4c.84 0 1.673.025 2.5.075V3.75c0-.69-.56-1.25-1.25-1.25h-2.5c-.69 0-1.25.56-1.25 1.25v.325C8.327 4.025 9.16 4 10 4zM8.58 7.72a.75.75 0 00-1.5.06l.3 7.5a.75.75 0 101.5-.06l-.3-7.5zm4.34.06a.75.75 0 10-1.5-.06l-.3 7.5a.75.75 0 101.5.06l.3-7.5z"
+                  >
+                  </path>
+                </svg>
+              </.link>
+            </div>
+          </div>
+        </.kanban_card>
+      <% end %>
+    </.kanban_board>
+
+    <.kanban_board task_status_zone_id="completed">
+      <h1 class="text-center">Completed</h1>
+      <hr />
+      <%= for task <- @project.tasks do %>
+        <.kanban_card
+          :if={task.status == "completed"}
+          id={"task-#{task.id}"}
+          class="border-green-500"
+        >
+          <div class="text-black overflow-hidden">
+            <span><%= String.capitalize(task.task) %></span>
+          </div>
+          <div class="flex justify-between mt-3">
+            <%= task.assignee %>
+            <div class="flex gap-1">
+              <.link patch={~p"/projects/#{@project}/tasks/#{task}/edit"}>
+                <svg
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg"
+                  aria-hidden="true"
+                  class="w-5 h-5"
+                >
+                  <path d="M5.433 13.917l1.262-3.155A4 4 0 017.58 9.42l6.92-6.918a2.121 2.121 0 013 3l-6.92 6.918c-.383.383-.84.685-1.343.886l-3.154 1.262a.5.5 0 01-.65-.65z">
+                  </path>
+                  <path d="M3.5 5.75c0-.69.56-1.25 1.25-1.25H10A.75.75 0 0010 3H4.75A2.75 2.75 0 002 5.75v9.5A2.75 2.75 0 004.75 18h9.5A2.75 2.75 0 0017 15.25V10a.75.75 0 00-1.5 0v5.25c0 .69-.56 1.25-1.25 1.25h-9.5c-.69 0-1.25-.56-1.25-1.25v-9.5z">
+                  </path>
+                </svg>
+              </.link>
+              <.link
+                phx-click={
+                  JS.push("delete", value: %{task_id: task.id})
+                  |> hide("##{task.id}")
+                }
+                data-confirm="Are you sure?"
+              >
+                <svg
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg"
+                  aria-hidden="true"
+                  class="w-5 h-5"
+                >
+                  <path
+                    clip-rule="evenodd"
+                    fill-rule="evenodd"
+                    d="M8.75 1A2.75 2.75 0 006 3.75v.443c-.795.077-1.584.176-2.365.298a.75.75 0 10.23 1.482l.149-.022.841 10.518A2.75 2.75 0 007.596 19h4.807a2.75 2.75 0 002.742-2.53l.841-10.52.149.023a.75.75 0 00.23-1.482A41.03 41.03 0 0014 4.193V3.75A2.75 2.75 0 0011.25 1h-2.5zM10 4c.84 0 1.673.025 2.5.075V3.75c0-.69-.56-1.25-1.25-1.25h-2.5c-.69 0-1.25.56-1.25 1.25v.325C8.327 4.025 9.16 4 10 4zM8.58 7.72a.75.75 0 00-1.5.06l.3 7.5a.75.75 0 101.5-.06l-.3-7.5zm4.34.06a.75.75 0 10-1.5-.06l-.3 7.5a.75.75 0 101.5.06l.3-7.5z"
+                  >
+                  </path>
+                </svg>
+              </.link>
+            </div>
+          </div>
+        </.kanban_card>
+      <% end %>
+    </.kanban_board>
+  </div>
+<% end %>
 
 <.back navigate={~p"/projects"}>Back to projects</.back>
 
@@ -26,6 +287,23 @@
     user_id={@current_user.id}
     title={@page_title}
     action={@live_action}
+    project={@project}
+    patch={~p"/projects/#{@project}"}
+  />
+</.modal>
+
+<.modal
+  :if={@live_action in [:new_task, :edit_task]}
+  id="task-modal"
+  show
+  on_cancel={JS.patch(~p"/projects/#{@project}")}
+>
+  <.live_component
+    module={BeevsWeb.TaskLive.FormComponent}
+    id={@task.id || :new_task}
+    title={@page_title}
+    action={@live_action}
+    task={@task}
     project={@project}
     patch={~p"/projects/#{@project}"}
   />
