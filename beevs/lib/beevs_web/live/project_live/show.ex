@@ -48,7 +48,7 @@ defmodule BeevsWeb.ProjectLive.Show do
 
   defp apply_action(socket, :edit_collaborators, %{"id" => id}) do
     socket
-    |> assign(:page_title, "Edit Collaborators")
+    |> assign(:page_title, "Collaborators")
     |> assign(:project, WorkSpaces.get_project!(id))
     |> assign(tasks_view: :kanban)
   end
@@ -64,7 +64,12 @@ defmodule BeevsWeb.ProjectLive.Show do
 
   @impl true
   def handle_event("delete_collaborator", %{"member_id" => member_id}, socket) do
-    WorkSpaces.delete_project_member(socket.assigns.project, Accounts.get_user!(member_id))
+    if socket.assigns.project.user_id == socket.assigns.current_user.id do
+      WorkSpaces.delete_project_member(socket.assigns.project, Accounts.get_user!(member_id))
+    else
+      {:error, "You can't delete a collabirator if you are not the owner of the project"}
+    end
+
     project = WorkSpaces.get_project!(socket.assigns.project.id)
 
     {:noreply, socket |> assign(:project, project)}

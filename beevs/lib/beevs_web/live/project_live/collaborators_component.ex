@@ -8,9 +8,17 @@ defmodule BeevsWeb.ProjectLive.CollaboratorsComponent do
     <div>
       <.header>
         <%= @title %>
-        <:subtitle>Use this form to edit your project collaborators.</:subtitle>
+        <:subtitle :if={@current_user.id == @project.user_id}>
+          Use this form to edit your project collaborators.
+        </:subtitle>
       </.header>
-      <.simple_form for={} id="task-form" phx-target={@myself} phx-submit="add_collaborator">
+      <.simple_form
+        :if={@current_user.id == @project.user_id}
+        for={}
+        id="task-form"
+        phx-target={@myself}
+        phx-submit="add_collaborator"
+      >
         <.input
           name="collaborator_email_or_username"
           type="text"
@@ -28,7 +36,7 @@ defmodule BeevsWeb.ProjectLive.CollaboratorsComponent do
         <:col :let={member} label="Email">
           <%= member.email %>
         </:col>
-        <:action :let={member}>
+        <:action :let={member} :if={@current_user.id == @project.user_id}>
           <.link
             phx-click={
               JS.push("delete_collaborator", value: %{member_id: member.id})

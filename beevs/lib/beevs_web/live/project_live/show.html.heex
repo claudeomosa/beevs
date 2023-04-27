@@ -63,7 +63,7 @@
 
   <:actions>
     <.link patch={~p"/projects/#{@project}/collaborators"}>
-      <.button>Edit Collaborators</.button>
+      <.button>Collaborators</.button>
     </.link>
   </:actions>
 
@@ -330,6 +330,7 @@
     action={@live_action}
     project={@project}
     patch={~p"/projects/#{@project}"}
+    current_user={@current_user}
     after_add_patch={~p"/projects/#{@project}/collaborators"}
   />
 </.modal>
