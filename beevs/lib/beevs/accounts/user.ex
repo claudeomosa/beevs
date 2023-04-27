@@ -10,6 +10,8 @@ defmodule Beevs.Accounts.User do
     field(:username, :string)
     field(:avatar, :string)
 
+    has_many :tasks, Beevs.WorkSpaces.Task
+
     many_to_many(:projects, Beevs.WorkSpaces.Project,
       join_through: Beevs.WorkSpaces.ProjectMember,
       on_replace: :delete

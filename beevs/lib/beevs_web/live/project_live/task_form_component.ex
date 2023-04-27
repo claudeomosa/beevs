@@ -20,7 +20,14 @@ defmodule BeevsWeb.TaskLive.FormComponent do
         phx-submit="save"
       >
         <.input field={@form[:task]} type="text" label="Task" />
-        <.input field={@form[:assignee]} type="text" label="Assignee" />
+        <.input
+          field={@form[:user_id]}
+          type="select"
+          label="Assignee"
+          multiple={false}
+          id="task-assignee"
+          options={@assignee_options}
+        />
         <.input
           field={@form[:status]}
           type="select"

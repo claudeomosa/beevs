@@ -3,7 +3,7 @@ defmodule Beevs.WorkSpaces.Task do
   import Ecto.Changeset
 
   schema "tasks" do
-    field :assignee, :string
+    belongs_to :user, Beevs.Accounts.User
     field :status, :string
     field :task, :string
     belongs_to :project, Beevs.WorkSpaces.Project
@@ -14,8 +14,9 @@ defmodule Beevs.WorkSpaces.Task do
   @doc false
   def changeset(task, attrs) do
     task
-    |> cast(attrs, [:task, :assignee, :status, :project_id])
+    |> cast(attrs, [:task, :user_id, :status, :project_id])
     |> cast_assoc(:project)
-    |> validate_required([:task, :assignee, :status, :project_id])
+    |> cast_assoc(:user)
+    |> validate_required([:task, :user_id, :status, :project_id])
   end
 end

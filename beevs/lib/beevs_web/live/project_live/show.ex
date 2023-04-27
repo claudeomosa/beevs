@@ -7,7 +7,6 @@ defmodule BeevsWeb.ProjectLive.Show do
 
   @impl true
   def mount(_params, _session, socket) do
-    # IO.inspect(socket)
     {:ok, socket}
   end
 
@@ -33,11 +32,25 @@ defmodule BeevsWeb.ProjectLive.Show do
   end
 
   defp apply_action(socket, :new_task, params) do
+    project = WorkSpaces.get_project!(params["id"])
+
+    assignee_options =
+      Enum.map(project.members, fn member ->
+        {String.to_atom(member.email), member.id}
+      end)
+
+    assignee_options = [
+      {String.to_atom(project.user.email), project.user.id}
+      | assignee_options
+    ]
+
     socket
     |> assign(:page_title, "New Task")
     |> assign(:task, %Task{})
-    |> assign(:project, WorkSpaces.get_project!(params["id"]))
+    |> assign(:project, project)
     |> assign(tasks_view: :table)
+    |> assign(:assignee_options, assignee_options)
+    |> IO.inspect()
   end
 
   defp apply_action(socket, :edit_task, %{"task_id" => task_id}) do

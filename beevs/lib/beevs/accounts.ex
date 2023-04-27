@@ -69,6 +69,7 @@ defmodule Beevs.Accounts do
     User
     |> Repo.get!(id)
     |> Repo.preload(:projects)
+    |> Repo.preload(:tasks)
   end
 
   ## User registration

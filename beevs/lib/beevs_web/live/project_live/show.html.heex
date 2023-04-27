@@ -81,12 +81,12 @@
     <%= String.capitalize(task.task) %>
   </:col>
   <:col :let={task} label="Task Assignee">
-    <%= task.assignee %>
+    <%= Beevs.Accounts.get_user!(task.user_id).email %>
   </:col>
   <:col :let={task} label="Task Status">
     <%= case task.status do %>
       <% "todo" -> %>
-        <span class="text-red-500">Todo</span>
+        <span class="text-red-500 ">Todo</span>
       <% "ongoing" -> %>
         <span class="text-yellow-500">In Progress</span>
       <% "completed" -> %>
@@ -121,7 +121,7 @@
             <%= String.capitalize(task.task) %>
           </div>
           <div class="flex justify-between mt-3">
-            <%= task.assignee %>
+            <%= Beevs.Accounts.get_user!(task.user_id).email %>
             <div class="flex gap-1">
               <.link patch={~p"/projects/#{@project}/tasks/#{task}/edit"}>
                 <svg
@@ -178,7 +178,8 @@
             <%= String.capitalize(task.task) %>
           </div>
           <div class="flex justify-between mt-3">
-            <%= task.assignee %>
+            <%= Beevs.Accounts.get_user!(task.user_id).email %>
+
             <div class="flex gap-1">
               <.link patch={~p"/projects/#{@project}/tasks/#{task}/edit"}>
                 <svg
@@ -235,7 +236,8 @@
             <span><%= String.capitalize(task.task) %></span>
           </div>
           <div class="flex justify-between mt-3">
-            <%= task.assignee %>
+            <%= Beevs.Accounts.get_user!(task.user_id).email %>
+
             <div class="flex gap-1">
               <.link patch={~p"/projects/#{@project}/tasks/#{task}/edit"}>
                 <svg
@@ -313,6 +315,7 @@
     action={@live_action}
     task={@task}
     project={@project}
+    assignee_options={@assignee_options}
     patch={~p"/projects/#{@project}"}
   />
 </.modal>

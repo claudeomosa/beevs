@@ -36,8 +36,7 @@ defmodule BeevsWeb.ProjectLive.FormComponent do
     {:ok,
      socket
      |> assign(assigns)
-     |> assign(:info_form, to_form(project_changeset))
-     |> IO.inspect()}
+     |> assign(:info_form, to_form(project_changeset))}
   end
 
   @impl true
