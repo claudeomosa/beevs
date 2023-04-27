@@ -52,6 +52,7 @@ defmodule BeevsWeb.ProjectLive.Show do
     {:noreply, socket |> assign(:project, project)}
   end
 
+  @impl true
   def handle_event("change_tasks_view", %{"tasks_view" => tasks_view}, socket) do
     {:noreply, socket |> assign(:tasks_view, String.to_atom(tasks_view))}
   end
