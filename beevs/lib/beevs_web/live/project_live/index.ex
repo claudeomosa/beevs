@@ -6,7 +6,12 @@ defmodule BeevsWeb.ProjectLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, stream(socket, :projects, WorkSpaces.list_projects())}
+    projects =
+      Enum.filter(WorkSpaces.list_projects(), fn project ->
+        project.user_id == socket.assigns.current_user.id
+      end)
+
+    {:ok, stream(socket, :projects, projects)}
   end
 
   @impl true
@@ -17,6 +22,7 @@ defmodule BeevsWeb.ProjectLive.Index do
   defp apply_action(socket, :edit, %{"id" => id}) do
     socket
     |> assign(:page_title, "Edit Project")
+    |> assign(:user_id, socket.assigns.current_user.id)
     |> assign(:project, WorkSpaces.get_project!(id))
   end
 
@@ -24,6 +30,7 @@ defmodule BeevsWeb.ProjectLive.Index do
     socket
     |> assign(:page_title, "New Project")
     |> assign(:project, %Project{})
+    |> assign(:user_id, socket.assigns.current_user.id)
   end
 
   defp apply_action(socket, :index, _params) do

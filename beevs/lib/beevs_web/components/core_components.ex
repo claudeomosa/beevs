@@ -53,7 +53,11 @@ defmodule BeevsWeb.CoreComponents do
       phx-remove={hide_modal(@id)}
       class="relative z-50 hidden"
     >
-      <div id={"#{@id}-bg"} class="fixed inset-0 bg-zinc-50/90 transition-opacity" aria-hidden="true" />
+      <div
+        id={"#{@id}-bg"}
+        class="fixed inset-0 bg-slate-200 dark:bg-[#1b263b] bg-opacity-75 dark:bg-opacity-75 transition-opacity"
+        aria-hidden="true"
+      />
       <div
         class="fixed inset-0 overflow-y-auto"
         aria-labelledby={"#{@id}-title"}
@@ -62,15 +66,15 @@ defmodule BeevsWeb.CoreComponents do
         aria-modal="true"
         tabindex="0"
       >
-        <div class="flex min-h-full items-center justify-center">
-          <div class="w-full max-w-3xl p-4 sm:p-6 lg:py-8">
+        <div class="flex min-h-full items-center justify-center ">
+          <div class="w-full max-w-3xl p-4 sm:p-6 lg:py-8 ">
             <.focus_wrap
               id={"#{@id}-container"}
               phx-mounted={@show && show_modal(@id)}
               phx-window-keydown={hide_modal(@on_cancel, @id)}
               phx-key="escape"
               phx-click-away={hide_modal(@on_cancel, @id)}
-              class="hidden relative rounded-2xl bg-white p-14 shadow-lg shadow-zinc-700/10 ring-1 ring-zinc-700/10 transition"
+              class="hidden relative rounded-2xl bg-[#eee] dark:bg-[#2e4059] p-14 shadow-lg shadow-zinc-700/10 ring-1 ring-zinc-700/10 transition"
             >
               <div class="absolute top-6 right-5">
                 <button
@@ -82,7 +86,7 @@ defmodule BeevsWeb.CoreComponents do
                   <Heroicons.x_mark solid class="h-5 w-5 stroke-current" />
                 </button>
               </div>
-              <div id={"#{@id}-content"}>
+              <div id={"#{@id}-content"} class="dark:bg-[#2e4059]">
                 <header :if={@title != []}>
                   <h1 id={"#{@id}-title"} class="text-lg font-semibold leading-8 text-zinc-800">
                     <%= render_slot(@title) %>
@@ -227,7 +231,7 @@ defmodule BeevsWeb.CoreComponents do
   def simple_form(assigns) do
     ~H"""
     <.form :let={f} for={@for} as={@as} {@rest}>
-      <div class="space-y-8 bg-white mt-10">
+      <div class="space-y-8 bg-[#eee] dark:bg-[#2e4059] mt-10">
         <%= render_slot(@inner_block, f) %>
         <div :for={action <- @actions} class="mt-2 flex items-center justify-between gap-6">
           <%= render_slot(action, f) %>
@@ -292,6 +296,8 @@ defmodule BeevsWeb.CoreComponents do
   attr :field, Phoenix.HTML.FormField,
     doc: "a form field struct retrieved from the form, for example: @form[:email]"
 
+  attr :accept, :string, default: nil, doc: "the accept attribute for file inputs"
+
   attr :errors, :list, default: []
   attr :checked, :boolean, doc: "the checked flag for checkbox inputs"
   attr :prompt, :string, default: nil, doc: "the prompt for select inputs"
@@ -341,7 +347,7 @@ defmodule BeevsWeb.CoreComponents do
       <select
         id={@id}
         name={@name}
-        class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-zinc-500 focus:border-zinc-500 sm:text-sm"
+        class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white dark:bg-[#1b263b] rounded-md shadow-sm focus:outline-none focus:ring-zinc-500 focus:border-zinc-500 sm:text-sm"
         multiple={@multiple}
         {@rest}
       >
@@ -364,7 +370,7 @@ defmodule BeevsWeb.CoreComponents do
           "mt-2 block min-h-[6rem] w-full rounded-lg border-zinc-300 py-[7px] px-[11px]",
           "text-zinc-900 focus:border-zinc-400 focus:outline-none focus:ring-4 focus:ring-zinc-800/5 sm:text-sm sm:leading-6",
           "phx-no-feedback:border-zinc-300 phx-no-feedback:focus:border-zinc-400 phx-no-feedback:focus:ring-zinc-800/5",
-          "border-zinc-300 focus:border-zinc-400 focus:ring-zinc-800/5",
+          "border-zinc-300 focus:border-zinc-400 focus:ring-zinc-800/5 resize-none dark:bg-[#1b263b] dark:text-white",
           @errors != [] && "border-rose-400 focus:border-rose-400 focus:ring-rose-400/10"
         ]}
         {@rest}
@@ -387,7 +393,7 @@ defmodule BeevsWeb.CoreComponents do
           "mt-2 block w-full rounded-lg border-zinc-300 py-[7px] px-[11px]",
           "text-zinc-900 focus:outline-none focus:ring-4 sm:text-sm sm:leading-6",
           "phx-no-feedback:border-zinc-300 phx-no-feedback:focus:border-zinc-400 phx-no-feedback:focus:ring-zinc-800/5",
-          "border-zinc-300 focus:border-zinc-400 focus:ring-zinc-800/5",
+          "border-zinc-300 focus:border-zinc-400 focus:ring-zinc-800/5 dark:bg-[#1b263b] dark:text-white",
           @errors != [] && "border-rose-400 focus:border-rose-400 focus:ring-rose-400/10"
         ]}
         {@rest}
@@ -405,7 +411,7 @@ defmodule BeevsWeb.CoreComponents do
 
   def label(assigns) do
     ~H"""
-    <label for={@for} class="block text-sm font-semibold leading-6 text-zinc-800">
+    <label for={@for} class="block text-sm font-semibold leading-6 text-zinc-600 dark:text-[#aaa]">
       <%= render_slot(@inner_block) %>
     </label>
     """
@@ -436,12 +442,15 @@ defmodule BeevsWeb.CoreComponents do
 
   def header(assigns) do
     ~H"""
-    <header class={[@actions != [] && "flex items-center justify-between gap-6", @class]}>
+    <header class={[
+      @actions != [] && "flex items-center justify-between gap-6 ",
+      @class
+    ]}>
       <div>
-        <h1 class="text-lg font-semibold leading-8 text-zinc-800">
+        <h1 class="text-lg font-semibold leading-8 text-zinc-800 dark:text-[#e0e1dd]">
           <%= render_slot(@inner_block) %>
         </h1>
-        <p :if={@subtitle != []} class="mt-2 text-sm leading-6 text-zinc-600">
+        <p :if={@subtitle != []} class="mt-2 text-sm leading-6 text-zinc-600 dark:text-[#aaa]">
           <%= render_slot(@subtitle) %>
         </p>
       </div>
@@ -486,7 +495,9 @@ defmodule BeevsWeb.CoreComponents do
       <table class="mt-11 w-[40rem] sm:w-full">
         <thead class="text-left text-[0.8125rem] leading-6 text-zinc-500">
           <tr>
-            <th :for={col <- @col} class="p-0 pb-4 pr-6 font-normal"><%= col[:label] %></th>
+            <th :for={col <- @col} class="p-0 pb-4 pr-6 font-normal text-[1rem] font-mono">
+              <%= col[:label] %>
+            </th>
             <th class="relative p-0 pb-4"><span class="sr-only"><%= gettext("Actions") %></span></th>
           </tr>
         </thead>
@@ -495,22 +506,29 @@ defmodule BeevsWeb.CoreComponents do
           phx-update={match?(%Phoenix.LiveView.LiveStream{}, @rows) && "stream"}
           class="relative divide-y divide-zinc-100 border-t border-zinc-200 text-sm leading-6 text-zinc-700"
         >
-          <tr :for={row <- @rows} id={@row_id && @row_id.(row)} class="group hover:bg-zinc-50">
+          <tr
+            :for={row <- @rows}
+            id={@row_id && @row_id.(row)}
+            class="group hover:bg-zinc-50 dark:hover:bg-gray-600"
+          >
             <td
               :for={{col, i} <- Enum.with_index(@col)}
               phx-click={@row_click && @row_click.(row)}
               class={["relative p-0", @row_click && "hover:cursor-pointer"]}
             >
               <div class="block py-4 pr-6">
-                <span class="absolute -inset-y-px right-0 -left-4 group-hover:bg-zinc-50 sm:rounded-l-xl" />
-                <span class={["relative", i == 0 && "font-semibold text-zinc-900"]}>
+                <span class="absolute -inset-y-px right-0 -left-4 group-hover:bg-zinc-50 sm:rounded-l-xl dark:group-hover:bg-gray-600" />
+                <span class={[
+                  "relative dark:text-zinc-300",
+                  i == 0 && "font-semibold dark:text-black"
+                ]}>
                   <%= render_slot(col, @row_item.(row)) %>
                 </span>
               </div>
             </td>
             <td :if={@action != []} class="relative p-0 w-14">
               <div class="relative whitespace-nowrap py-4 text-right text-sm font-medium">
-                <span class="absolute -inset-y-px -right-4 left-0 group-hover:bg-zinc-50 sm:rounded-r-xl" />
+                <span class="absolute -inset-y-px -right-4 left-0 group-hover:bg-zinc-50 sm:rounded-r-xl dark:group-hover:bg-gray-600" />
                 <span
                   :for={action <- @action}
                   class="relative ml-4 font-semibold leading-6 text-zinc-900 hover:text-zinc-700"
@@ -522,6 +540,26 @@ defmodule BeevsWeb.CoreComponents do
           </tr>
         </tbody>
       </table>
+    </div>
+    """
+  end
+
+  @doc """
+  Renders a project card
+  """
+
+  def project_card(assigns) do
+    assigns =
+      with %{cards: %Phoenix.LiveView.LiveStream{}} <- assigns do
+        assign(assigns, card_id: assigns.card_id || fn {id, _item} -> id end)
+      end
+
+    ~H"""
+    <div
+      href={@navigate}
+      class="flex flex-col h-auto justify-between px-6 py-6 shadow dark:bg-[#1b263b] bg-[#ecf8f8] rounded hover:shadow-black"
+    >
+      <%= render_slot(@inner_block) %>
     </div>
     """
   end
@@ -587,13 +625,53 @@ defmodule BeevsWeb.CoreComponents do
     ~H"""
     <.link
       href={@navigate}
-      phx-click={@navigate && "navigate"}
+      navigate={@navigate}
       class={[
         "text-[1.5rem] mx-6 leading-6 font-semibold hover:text-zinc-700 flex items-center gap-2  dark:hover:bg-slate-400 hover:bg-[#cddada] p-2 rounded"
       ]}
     >
       <%= render_slot(@inner_block) %>
     </.link>
+    """
+  end
+
+  @doc """
+  Renders a Kanban board.
+  """
+  attr :class, :string, default: ""
+  attr :task_status_zone_id, :string, required: true
+  slot :inner_block, required: true
+
+  def kanban_board(assigns) do
+    ~H"""
+    <div
+      class={["task_status_zone p-3 border-solid border-2 rounded-md my-3", @class]}
+      id={@task_status_zone_id}
+    >
+      <%= render_slot(@inner_block) %>
+    </div>
+    """
+  end
+
+  @doc """
+  Renders a Kanban card.
+  """
+  attr :class, :string, default: ""
+  attr :id, :string, required: true
+  slot :inner_block, required: true
+
+  def kanban_card(assigns) do
+    ~H"""
+    <div
+      draggable="true"
+      class={[
+        "draggable p-4 text-white border mt-2 rounded dark:hover:bg-[#273654] h-auto",
+        @class
+      ]}
+      id={@id}
+    >
+      <%= render_slot(@inner_block) %>
+    </div>
     """
   end
 

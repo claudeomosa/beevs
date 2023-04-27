@@ -6,10 +6,9 @@ defmodule BeevsWeb.ProjectLive.FormComponent do
   @impl true
   def render(assigns) do
     ~H"""
-    <div>
+    <div class="">
       <.header>
         <%= @title %>
-        <:subtitle>Use this form to manage project records in your database.</:subtitle>
       </.header>
 
       <.simple_form
@@ -20,6 +19,8 @@ defmodule BeevsWeb.ProjectLive.FormComponent do
         phx-submit="save"
       >
         <.input field={@form[:project_name]} type="text" label="Project name" />
+        <.input field={@form[:project_description]} type="textarea" label="Project description" />
+        <.input field={@form[:user_id]} type="hidden" value={@user_id} />
         <:actions>
           <.button phx-disable-with="Saving...">Save Project</.button>
         </:actions>
