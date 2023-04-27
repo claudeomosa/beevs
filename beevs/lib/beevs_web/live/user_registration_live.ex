@@ -55,6 +55,10 @@ defmodule BeevsWeb.UserRegistrationLive do
   end
 
   def handle_event("save", %{"user" => user_params}, socket) do
+    username = generate_username()
+
+    user_params = Map.put(user_params, "username", username)
+
     case Accounts.register_user(user_params) do
       {:ok, user} ->
         {:ok, _} =
@@ -84,5 +88,9 @@ defmodule BeevsWeb.UserRegistrationLive do
     else
       assign(socket, form: form)
     end
+  end
+
+  defp generate_username do
+    MnemonicSlugs.generate_slug(2)
   end
 end

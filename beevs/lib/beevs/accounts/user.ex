@@ -10,6 +10,13 @@ defmodule Beevs.Accounts.User do
     field(:username, :string)
     field(:avatar, :string)
 
+    has_many :tasks, Beevs.WorkSpaces.Task
+
+    many_to_many(:projects, Beevs.WorkSpaces.Project,
+      join_through: Beevs.WorkSpaces.ProjectMember,
+      on_replace: :delete
+    )
+
     field(:job, :string, default: "project_manager")
     # add validate_job_options to validate the job field of save user info changeset
 
@@ -17,6 +24,13 @@ defmodule Beevs.Accounts.User do
     field(:confirmed_at, :naive_datetime)
 
     timestamps()
+  end
+
+  def changeset(user, attrs) do
+    user
+    |> cast(attrs, [:email, :password, :first_name, :last_name, :username, :avatar, :job])
+    |> cast_assoc(:projects)
+    |> validate_required([:email, :password, :first_name, :last_name, :username, :avatar, :job])
   end
 
   @doc """
@@ -42,9 +56,11 @@ defmodule Beevs.Accounts.User do
       submitting the form), this option can be set to `false`.
       Defaults to `true`.
   """
+
   def registration_changeset(user, attrs, opts \\ []) do
     user
-    |> cast(attrs, [:email, :password, :first_name, :last_name])
+    |> cast(attrs, [:email, :password, :first_name, :last_name, :username])
+    |> cast_assoc(:projects)
     |> validate_email(opts)
     |> validate_password(opts)
   end
@@ -127,6 +143,35 @@ defmodule Beevs.Accounts.User do
     |> cast(attrs, [:password])
     |> validate_confirmation(:password, message: "does not match password")
     |> validate_password(opts)
+  end
+
+  @doc """
+  A user changeset for changing the user username.
+  """
+  def username_changeset(user, attrs, opts \\ []) do
+    user
+    |> cast(attrs, [:username])
+    |> validate_username(opts)
+  end
+
+  defp validate_username(changeset, opts) do
+    changeset
+    |> validate_required([:username])
+    |> validate_length(:username, min: 3, max: 20)
+    |> validate_format(:username, ~r/^[a-zA-Z0-9_-]+$/,
+      message: "only allows letters, numbers, hyphens and underscores"
+    )
+    |> maybe_validate_unique_username(opts)
+  end
+
+  defp maybe_validate_unique_username(changeset, opts) do
+    if Keyword.get(opts, :validate_username, true) do
+      changeset
+      |> unsafe_validate_unique(:username, Beevs.Repo)
+      |> unique_constraint(:username)
+    else
+      changeset
+    end
   end
 
   @doc """

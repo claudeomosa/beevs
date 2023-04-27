@@ -27,6 +27,13 @@ defmodule Beevs.Accounts do
   end
 
   @doc """
+  Gets a user by username.
+  """
+  def get_user_by_username(username) when is_binary(username) do
+    Repo.get_by(User, username: username)
+  end
+
+  @doc """
   Gets a user by email and password.
 
   ## Examples
@@ -58,7 +65,12 @@ defmodule Beevs.Accounts do
       ** (Ecto.NoResultsError)
 
   """
-  def get_user!(id), do: Repo.get!(User, id)
+  def get_user!(id) do
+    User
+    |> Repo.get!(id)
+    |> Repo.preload(:projects)
+    |> Repo.preload(:tasks)
+  end
 
   ## User registration
 
@@ -208,6 +220,44 @@ defmodule Beevs.Accounts do
     Ecto.Multi.new()
     |> Ecto.Multi.update(:user, changeset)
     |> Ecto.Multi.delete_all(:tokens, UserToken.user_and_contexts_query(user, :all))
+    |> Repo.transaction()
+    |> case do
+      {:ok, %{user: user}} -> {:ok, user}
+      {:error, :user, changeset, _} -> {:error, changeset}
+    end
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for changing the user username.
+
+  ## Examples
+
+      iex> change_user_username(user)
+      %Ecto.Changeset{data: %User{}}
+  """
+  def change_user_username(user, attrs \\ %{}) do
+    User.username_changeset(user, attrs)
+  end
+
+  @doc """
+  Updates the user username.
+
+  ## Examples
+
+      iex> update_user_username(user, %{username: ...})
+      {:ok, %User{}}
+
+      iex> update_user_username(user, %{username: ...})
+      {:error, %Ecto.Changeset{}}
+  """
+  def update_user_username(user, password, attrs) do
+    changeset =
+      user
+      |> User.username_changeset(attrs)
+      |> User.validate_current_password(password)
+
+    Ecto.Multi.new()
+    |> Ecto.Multi.update(:user, changeset)
     |> Repo.transaction()
     |> case do
       {:ok, %{user: user}} -> {:ok, user}
