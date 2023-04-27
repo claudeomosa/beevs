@@ -557,7 +557,7 @@ defmodule BeevsWeb.CoreComponents do
     ~H"""
     <div
       href={@navigate}
-      class="flex flex-col max-w-[30vw] justify-between px-8 py-10 shadow h-60 dark:bg-[#1b263b] bg-[#ecf8f8] rounded hover:shadow-black"
+      class="flex flex-col h-auto justify-between px-6 py-6 shadow dark:bg-[#1b263b] bg-[#ecf8f8] rounded hover:shadow-black"
     >
       <%= render_slot(@inner_block) %>
     </div>
@@ -632,6 +632,46 @@ defmodule BeevsWeb.CoreComponents do
     >
       <%= render_slot(@inner_block) %>
     </.link>
+    """
+  end
+
+  @doc """
+  Renders a Kanban board.
+  """
+  attr :class, :string, default: ""
+  attr :task_status_zone_id, :string, required: true
+  slot :inner_block, required: true
+
+  def kanban_board(assigns) do
+    ~H"""
+    <div
+      class={["task_status_zone p-3 border-solid border-2 rounded-md my-3", @class]}
+      id={@task_status_zone_id}
+    >
+      <%= render_slot(@inner_block) %>
+    </div>
+    """
+  end
+
+  @doc """
+  Renders a Kanban card.
+  """
+  attr :class, :string, default: ""
+  attr :id, :string, required: true
+  slot :inner_block, required: true
+
+  def kanban_card(assigns) do
+    ~H"""
+    <div
+      draggable="true"
+      class={[
+        "draggable p-4 text-white border mt-2 rounded dark:hover:bg-[#273654] h-auto",
+        @class
+      ]}
+      id={@id}
+    >
+      <%= render_slot(@inner_block) %>
+    </div>
     """
   end
 
