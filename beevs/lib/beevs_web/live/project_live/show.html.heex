@@ -62,6 +62,12 @@
   </div>
 
   <:actions>
+    <.link navigate={~p"/projects/#{@project}/chatroom"}>
+      <.button>Chat room</.button>
+    </.link>
+  </:actions>
+
+  <:actions>
     <.link patch={~p"/projects/#{@project}/collaborators"}>
       <.button>Collaborators</.button>
     </.link>

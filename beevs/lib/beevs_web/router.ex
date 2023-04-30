@@ -77,6 +77,7 @@ defmodule BeevsWeb.Router do
       live "/projects/:id/collaborators", ProjectLive.Show, :edit_collaborators
       live "/projects/:id/tasks/new_task", ProjectLive.Show, :new_task
       live "/projects/:id/tasks/:task_id/edit", ProjectLive.Show, :edit_task
+      live "/projects/:id/chatroom", ProjectLive.Chat, :chatroom
     end
   end
 

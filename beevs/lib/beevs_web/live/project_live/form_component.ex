@@ -72,6 +72,7 @@ defmodule BeevsWeb.ProjectLive.FormComponent do
     case WorkSpaces.create_project(project_params) do
       {:ok, project} ->
         notify_parent({:saved, project})
+        create_project_chat_room()
 
         {:noreply,
          socket
@@ -88,4 +89,8 @@ defmodule BeevsWeb.ProjectLive.FormComponent do
   end
 
   defp notify_parent(msg), do: send(self(), {__MODULE__, msg})
+
+  defp create_project_chat_room() do
+    IO.puts("Creating chat room for project")
+  end
 end

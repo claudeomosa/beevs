@@ -676,6 +676,79 @@ defmodule BeevsWeb.CoreComponents do
     """
   end
 
+  @doc """
+    Renders an active member card.
+  """
+  attr :class, :string, default: ""
+  attr :id, :string, required: true
+  attr :initials, :string
+  attr :full_name, :string, required: true
+
+  def active_member_card(assigns) do
+    ~H"""
+    <div class="flex flex-row items-center rounded-xl p-2">
+      <div class="flex items-center justify-center h-8 w-8 bg-indigo-200 rounded-full">
+        <%= @initials %>
+      </div>
+      <div class="ml-2 text-sm font-semibold dark:text-gray-300">
+        <%= @full_name %>
+      </div>
+    </div>
+    """
+  end
+
+  @doc """
+    Renders an outgoing chat message.
+  """
+  attr :class, :string, default: ""
+  attr :id, :string, required: true
+  attr :sender_initials, :string, required: true
+  slot :inner_block, required: true
+
+  def outgoing_chat_message(assigns) do
+    ~H"""
+    <div class="col-start-1 col-end-8 p-3 rounded-lg">
+      <div class="flex flex-row items-center">
+        <div class="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">
+          <%= @sender_initials %>
+        </div>
+        <div class="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl">
+          <div>
+            <p class="leading-tight">
+              <%= render_slot(@inner_block) %>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    """
+  end
+
+  @doc """
+    Renders an incoming chat message.
+  """
+  attr :class, :string, default: ""
+  attr :id, :string, required: true
+  attr :sender_initials, :string, required: true
+  slot :inner_block, required: true
+
+  def incoming_chat_message(assigns) do
+    ~H"""
+    <div class="col-start-6 col-end-13 p-3 rounded-lg">
+      <div class="flex items-center justify-start flex-row-reverse">
+        <div class="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">
+          <%= @sender_initials %>
+        </div>
+        <div class="relative mr-3 text-sm bg-indigo-100 py-2 px-4 shadow rounded-xl">
+          <p class="leading-tight">
+            <%= render_slot(@inner_block) %>
+          </p>
+        </div>
+      </div>
+    </div>
+    """
+  end
+
   ## JS Commands
 
   def show(js \\ %JS{}, selector) do
