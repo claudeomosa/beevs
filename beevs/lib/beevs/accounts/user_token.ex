@@ -1,4 +1,15 @@
 defmodule Beevs.Accounts.UserToken do
+  @moduledoc """
+  A token that is stored in the database and can be used to
+  authenticate a user.
+
+  It is used for:
+
+    * Reset password
+    * Confirm email
+    * Change email
+    * Session
+  """
   use Ecto.Schema
   import Ecto.Query
   alias Beevs.Accounts.UserToken

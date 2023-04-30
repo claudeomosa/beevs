@@ -1,4 +1,7 @@
 defmodule Beevs.WorkSpaces.Task do
+  @moduledoc """
+  Task schema
+  """
   use Ecto.Schema
   import Ecto.Changeset
 

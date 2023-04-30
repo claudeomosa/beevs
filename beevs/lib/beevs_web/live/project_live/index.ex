@@ -42,13 +42,10 @@ defmodule BeevsWeb.ProjectLive.Index do
       :collaborating_projects,
       Accounts.get_user!(socket.assigns.current_user.id).projects
     )
-    |> IO.inspect()
   end
 
   @impl true
   def handle_event("exit_project", %{"collab_project_id" => collab_project_id}, socket) do
-    IO.inspect(collab_project_id, label: "collab_project_id")
-
     WorkSpaces.delete_project_member(
       WorkSpaces.get_project!(collab_project_id),
       socket.assigns.current_user

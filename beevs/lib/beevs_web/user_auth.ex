@@ -1,4 +1,12 @@
 defmodule BeevsWeb.UserAuth do
+  @moduledoc """
+  This module provides functions to log in and log out users.
+
+  It is used by the `BeevsWeb.UserController` and `BeevsWeb.SessionController`
+
+  It is also used by the `BeevsWeb.Router.Helpers` to generate
+  the `signed_in_path` and `signed_out_path` helpers.
+  """
   use BeevsWeb, :verified_routes
 
   import Plug.Conn

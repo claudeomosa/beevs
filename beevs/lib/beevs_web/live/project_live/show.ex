@@ -50,7 +50,6 @@ defmodule BeevsWeb.ProjectLive.Show do
     |> assign(:project, project)
     |> assign(tasks_view: :table)
     |> assign(:assignee_options, assignee_options)
-    |> IO.inspect()
   end
 
   defp apply_action(socket, :edit_task, %{"task_id" => task_id}) do
