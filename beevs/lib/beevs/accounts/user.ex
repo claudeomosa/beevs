@@ -15,6 +15,8 @@ defmodule Beevs.Accounts.User do
 
     has_many :tasks, Beevs.WorkSpaces.Task
 
+    has_many :messages, Beevs.WorkSpaces.Message
+
     many_to_many(:projects, Beevs.WorkSpaces.Project,
       join_through: Beevs.WorkSpaces.ProjectMember,
       on_replace: :delete
