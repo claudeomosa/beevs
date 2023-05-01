@@ -705,7 +705,7 @@ defmodule BeevsWeb.CoreComponents do
   attr :sender_initials, :string, required: true
   slot :inner_block, required: true
 
-  def outgoing_chat_message(assigns) do
+  def incoming_chat_message(assigns) do
     ~H"""
     <div class="col-start-1 col-end-8 p-3 rounded-lg">
       <div class="flex flex-row items-center">
@@ -732,7 +732,7 @@ defmodule BeevsWeb.CoreComponents do
   attr :sender_initials, :string, required: true
   slot :inner_block, required: true
 
-  def incoming_chat_message(assigns) do
+  def outgoing_chat_message(assigns) do
     ~H"""
     <div class="col-start-6 col-end-13 p-3 rounded-lg">
       <div class="flex items-center justify-start flex-row-reverse">

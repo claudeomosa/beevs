@@ -25,13 +25,25 @@
     <div class="flex flex-col flex-auto h-full p-6">
       <div class="flex flex-col flex-auto flex-shrink-0 rounded-2xl bg-gray-400 dark:bg-[#2e4056] h-full p-4">
         <div class="flex flex-col h-full overflow-x-auto mb-4">
-          <div class="flex flex-col h-full">
-            <div class="grid grid-cols-12 gap-y-2">
-              <.outgoing_chat_message id="message1" sender_initials="FC">
-                Hey How are you today sir?
+          <div class="flex flex-col h-full justify-end">
+            <div
+              :for={message <- @chat_room_project.chatroom.messages}
+              class="grid grid-cols-12 gap-y-2"
+              id="messages"
+            >
+              <.outgoing_chat_message
+                :if={message.user_id == @current_user.id}
+                id={"message #{message.id}"}
+                sender_initials="FC"
+              >
+                <%= message.body %>
               </.outgoing_chat_message>
-              <.incoming_chat_message id="message2" sender_initials="CO">
-                I'm fine, thank you. How are you?
+              <.incoming_chat_message
+                :if={message.user_id != @current_user.id}
+                id={"message #{message.id}"}
+                sender_initials="CO"
+              >
+                <%= message.body %>
               </.incoming_chat_message>
             </div>
           </div>
@@ -67,6 +79,7 @@
                 name="body"
                 type="text"
                 field={@message_form[:body]}
+                placeholder="Enter your message..."
                 class="flex w-full border rounded-xl focus:outline-none focus:border-indigo-300 pl-4 h-10 dark:bg-gray-200"
               />
               <button class="absolute flex items-center justify-center h-full w-12 right-0 top-0 text-gray-400 hover:text-gray-600">
@@ -89,7 +102,7 @@
             </div>
           </div>
           <div class="ml-4">
-            <button
+            <.button
               value="submit_message"
               class="flex items-center justify-center bg-indigo-500 hover:bg-indigo-600 rounded-xl text-white px-4 py-1 flex-shrink-0"
             >
@@ -111,7 +124,7 @@
                   </path>
                 </svg>
               </span>
-            </button>
+            </.button>
           </div>
         </.form>
       </div>
