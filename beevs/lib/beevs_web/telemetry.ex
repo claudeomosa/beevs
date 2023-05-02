@@ -1,4 +1,11 @@
 defmodule BeevsWeb.Telemetry do
+  @moduledoc """
+  Telemetry configuration for BeevsWeb.
+
+  This module is responsible for configuring Telemetry for BeevsWeb.
+  It is automatically required by `BeevsWeb.Endpoint`, and it is not
+  intended to be used anywhere else.
+  """
   use Supervisor
   import Telemetry.Metrics
 

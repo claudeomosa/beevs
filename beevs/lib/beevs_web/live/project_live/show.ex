@@ -36,11 +36,11 @@ defmodule BeevsWeb.ProjectLive.Show do
 
     assignee_options =
       Enum.map(project.members, fn member ->
-        {String.to_atom(member.email), member.id}
+        {member.email, member.id}
       end)
 
     assignee_options = [
-      {String.to_atom(project.user.email), project.user.id}
+      {project.user.email, project.user.id}
       | assignee_options
     ]
 
@@ -50,7 +50,6 @@ defmodule BeevsWeb.ProjectLive.Show do
     |> assign(:project, project)
     |> assign(tasks_view: :table)
     |> assign(:assignee_options, assignee_options)
-    |> IO.inspect()
   end
 
   defp apply_action(socket, :edit_task, %{"task_id" => task_id}) do

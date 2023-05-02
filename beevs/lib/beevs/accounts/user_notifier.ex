@@ -1,4 +1,7 @@
 defmodule Beevs.Accounts.UserNotifier do
+  @moduledoc """
+  UserNotifier module
+  """
   import Swoosh.Email
 
   alias Beevs.Mailer

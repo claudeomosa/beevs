@@ -1,4 +1,7 @@
 defmodule Beevs.WorkSpaces.Project do
+  @moduledoc """
+  Project schema
+  """
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -6,7 +9,8 @@ defmodule Beevs.WorkSpaces.Project do
     field(:project_name, :string)
     belongs_to(:user, Beevs.Accounts.User)
     field(:project_description, :string)
-    has_many(:tasks, Beevs.WorkSpaces.Task)
+    has_one(:chatroom, Beevs.WorkSpaces.Chatroom, on_delete: :delete_all)
+    has_many(:tasks, Beevs.WorkSpaces.Task, on_delete: :delete_all)
 
     many_to_many(:members, Beevs.Accounts.User,
       join_through: Beevs.WorkSpaces.ProjectMember,

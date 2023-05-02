@@ -1,4 +1,7 @@
 defmodule Beevs.Accounts.User do
+  @moduledoc """
+  User schema
+  """
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -11,6 +14,8 @@ defmodule Beevs.Accounts.User do
     field(:avatar, :string)
 
     has_many :tasks, Beevs.WorkSpaces.Task
+
+    has_many :messages, Beevs.WorkSpaces.Message
 
     many_to_many(:projects, Beevs.WorkSpaces.Project,
       join_through: Beevs.WorkSpaces.ProjectMember,

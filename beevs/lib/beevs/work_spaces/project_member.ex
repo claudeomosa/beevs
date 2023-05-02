@@ -1,4 +1,7 @@
 defmodule Beevs.WorkSpaces.ProjectMember do
+  @moduledoc """
+  ProjectMember schema
+  """
   use Ecto.Schema
   import Ecto.Changeset
 

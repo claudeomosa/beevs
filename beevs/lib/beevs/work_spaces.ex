@@ -8,6 +8,9 @@ defmodule Beevs.WorkSpaces do
   alias Beevs.Repo
 
   alias Beevs.WorkSpaces.Project
+  alias Beevs.WorkSpaces.Task
+  alias Beevs.WorkSpaces.Message
+  alias Beevs.WorkSpaces.Chatroom
 
   @doc """
   Returns the list of projects.
@@ -42,6 +45,7 @@ defmodule Beevs.WorkSpaces do
     |> Repo.preload(:tasks)
     |> Repo.preload(:user)
     |> Repo.preload(:members)
+    |> Repo.preload(chatroom: [messages: [:user]])
   end
 
   @doc """
@@ -144,8 +148,6 @@ defmodule Beevs.WorkSpaces do
     Project.changeset(project, attrs)
   end
 
-  alias Beevs.WorkSpaces.Task
-
   @doc """
   Returns the list of tasks.
 
@@ -242,5 +244,74 @@ defmodule Beevs.WorkSpaces do
   """
   def change_task(%Task{} = task, attrs \\ %{}) do
     Task.changeset(task, attrs)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking message changes.
+
+  ## Examples
+
+      iex> change_message(message)
+      %Ecto.Changeset{data: %Message{}}
+
+  """
+  def change_message(%Message{} = message, attrs \\ %{}) do
+    Message.changeset(message, attrs)
+  end
+
+  @doc """
+  Creates a new chatroom.
+
+  ## Examples
+
+      iex> create_chatroom(%{field: value})
+      {:ok, %Chatroom{}}
+
+      iex> create_chatroom(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_chatroom(attrs \\ %{}) do
+    %Chatroom{}
+    |> Chatroom.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Gets a single chatroom.
+
+  Raises `Ecto.NoResultsError` if the Chatroom does not exist.
+
+  ## Examples
+
+      iex> get_chatroom!(123)
+      %Chatroom{}
+
+      iex> get_chatroom!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_chatroom!(id) do
+    Chatroom
+    |> Repo.get!(id)
+    |> Repo.preload(:messages)
+  end
+
+  @doc """
+  Saves a message.
+
+  ## Examples
+
+      iex> save_message(%{field: value})
+      {:ok, %Message{}}
+
+      iex> save_message(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def save_message(attrs \\ %{}) do
+    %Message{}
+    |> Message.changeset(attrs)
+    |> Repo.insert()
   end
 end
