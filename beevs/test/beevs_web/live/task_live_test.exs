@@ -5,7 +5,11 @@ defmodule BeevsWeb.TaskLiveTest do
   import Beevs.WorkSpacesFixtures
 
   @create_attrs %{assignee: "some assignee", status: "some status", task: "some task"}
-  @update_attrs %{assignee: "some updated assignee", status: "some updated status", task: "some updated task"}
+  @update_attrs %{
+    assignee: "some updated assignee",
+    status: "some updated status",
+    task: "some updated task"
+  }
   @invalid_attrs %{assignee: nil, status: nil, task: nil}
 
   defp create_task(_) do

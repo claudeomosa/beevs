@@ -1,4 +1,7 @@
 defmodule Beevs.WorkSpaces.Message do
+  @moduledoc """
+  Message schema
+  """
   use Ecto.Schema
   import Ecto.Changeset
 

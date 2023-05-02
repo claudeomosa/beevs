@@ -1,4 +1,7 @@
 defmodule Beevs.WorkSpaces.Chatroom do
+  @moduledoc """
+  Chatroom schema
+  """
   use Ecto.Schema
   import Ecto.Changeset
 

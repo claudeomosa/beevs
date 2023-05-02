@@ -22,8 +22,7 @@ defmodule BeevsWeb.ProjectLive.Chat do
      |> assign(:page_title, "Chatroom")
      |> assign(:active_userlist, [])
      |> assign(:current_user, socket.assigns.current_user)
-     |> assign(:topic, topic)
-     |> IO.inspect()}
+     |> assign(:topic, topic)}
   end
 
   @impl true
@@ -67,7 +66,7 @@ defmodule BeevsWeb.ProjectLive.Chat do
 
   @impl true
   def handle_event("typing", _params, socket) do
-    # TODO, add restriction to profane words
+    # add restriction to profane words
     {:noreply, socket}
   end
 

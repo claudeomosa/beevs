@@ -89,7 +89,12 @@ defmodule Beevs.WorkSpacesTest do
 
     test "update_task/2 with valid data updates the task" do
       task = task_fixture()
-      update_attrs = %{assignee: "some updated assignee", status: "some updated status", task: "some updated task"}
+
+      update_attrs = %{
+        assignee: "some updated assignee",
+        status: "some updated status",
+        task: "some updated task"
+      }
 
       assert {:ok, %Task{} = task} = WorkSpaces.update_task(task, update_attrs)
       assert task.assignee == "some updated assignee"
