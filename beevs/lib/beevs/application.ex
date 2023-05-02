@@ -14,6 +14,8 @@ defmodule Beevs.Application do
       Beevs.Repo,
       # Start the PubSub system
       {Phoenix.PubSub, name: Beevs.PubSub},
+      # Start the Presence tracker
+      BeevsWeb.Presence,
       # Start Finch
       {Finch, name: Beevs.Finch},
       # Start the Endpoint (http/https)
