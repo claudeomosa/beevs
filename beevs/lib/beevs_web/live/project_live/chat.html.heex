@@ -5,19 +5,16 @@
       <div class="flex flex-col mt-8 justify-between h-full">
         <div class="flex flex-col space-y-1 mt-2 -mx-2 h-full overflow-y-auto ">
           <.header class=" flex flex-row">
-            Active Members (5)
+            Active Members {<%= length(@active_userlist) %>}
           </.header>
           <hr class="my-2 bg-black dark:bg-white h-[1px] border-none" />
-          <.active_member_card
-            id="member1"
-            initials="CO"
-            full_name={String.capitalize(@chat_room_project.user.first_name) <> " " <> String.capitalize(@chat_room_project.user.last_name) }
-          />
-          <.active_member_card
-            id="member2"
-            initials="GK"
-            full_name={String.capitalize(@chat_room_project.user.first_name) <> " " <> String.capitalize(@chat_room_project.user.last_name) }
-          />
+          <div :for={active_user <- @active_userlist}>
+            <.active_member_card
+              id={"member-#{active_user.id}"}
+              initials={String.capitalize(String.at(active_user.first_name, 0)) <> String.capitalize(String.at(active_user.last_name, 0))}
+              full_name={String.capitalize(active_user.first_name) <> " " <> String.capitalize(active_user.last_name) }
+            />
+          </div>
         </div>
         <.back navigate={~p"/projects/#{@chat_room_project}"}>Back to project</.back>
       </div>
@@ -34,14 +31,14 @@
               <.outgoing_chat_message
                 :if={message.user_id == @current_user.id}
                 id={"message #{message.id}"}
-                sender_initials="FC"
+                sender_initials={String.capitalize(String.at(message.user.first_name, 0)) <> String.capitalize(String.at(message.user.last_name, 0))}
               >
                 <%= message.body %>
               </.outgoing_chat_message>
               <.incoming_chat_message
                 :if={message.user_id != @current_user.id}
                 id={"message #{message.id}"}
-                sender_initials="CO"
+                sender_initials={String.capitalize(String.at(message.user.first_name, 0)) <> String.capitalize(String.at(message.user.last_name, 0))}
               >
                 <%= message.body %>
               </.incoming_chat_message>
