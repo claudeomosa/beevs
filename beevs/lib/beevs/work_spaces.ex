@@ -45,7 +45,7 @@ defmodule Beevs.WorkSpaces do
     |> Repo.preload(:tasks)
     |> Repo.preload(:user)
     |> Repo.preload(:members)
-    |> Repo.preload(chatroom: [:messages])
+    |> Repo.preload(chatroom: [messages: [:user]])
   end
 
   @doc """
