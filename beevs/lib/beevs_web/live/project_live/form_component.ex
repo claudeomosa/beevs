@@ -18,6 +18,7 @@ defmodule BeevsWeb.ProjectLive.FormComponent do
         phx-change="validate"
         phx-submit="save"
       >
+        <.error :if={@check_errors}></.error>
         <.input field={@info_form[:project_name]} type="text" label="Project name" />
         <.input field={@info_form[:project_description]} type="textarea" label="Project description" />
         <.input field={@info_form[:user_id]} type="hidden" value={@user_id} />
@@ -36,6 +37,7 @@ defmodule BeevsWeb.ProjectLive.FormComponent do
     {:ok,
      socket
      |> assign(assigns)
+     |> assign(check_errors: false)
      |> assign(:info_form, to_form(project_changeset))}
   end
 
@@ -64,7 +66,7 @@ defmodule BeevsWeb.ProjectLive.FormComponent do
          |> push_patch(to: socket.assigns.patch)}
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        {:noreply, assign_form(socket, changeset)}
+        {:noreply, socket |> assign(check_errors: true) |> assign_form(changeset)}
     end
   end
 
@@ -85,7 +87,13 @@ defmodule BeevsWeb.ProjectLive.FormComponent do
   end
 
   defp assign_form(socket, %Ecto.Changeset{} = changeset) do
-    assign(socket, :form, to_form(changeset))
+    form = to_form(changeset)
+
+    if changeset.valid? do
+      assign(socket, info_form: form, check_errors: false)
+    else
+      assign(socket, info_form: form)
+    end
   end
 
   defp notify_parent(msg), do: send(self(), {__MODULE__, msg})
