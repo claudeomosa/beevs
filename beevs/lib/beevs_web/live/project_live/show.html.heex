@@ -1,8 +1,8 @@
 <.header>
   <%= String.capitalize(@project.project_name) %>
-  <p class="max-w-[75%] break-all break-words text-sm leading-6 text-zinc-600 dark:text-[#aaa] mt-2">
+  <:subtitle>
     <%= String.capitalize(@project.project_description) %>
-  </p>
+  </:subtitle>
   <:actions>
     <.link patch={~p"/projects/#{@project}/show/edit"} phx-click={JS.push_focus()}>
       <.button>Edit project</.button>
