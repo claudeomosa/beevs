@@ -19,9 +19,13 @@ defmodule Beevs.Application do
       # Start Finch
       {Finch, name: Beevs.Finch},
       # Start the Endpoint (http/https)
-      BeevsWeb.Endpoint
+      BeevsWeb.Endpoint,
       # Start a worker by calling: Beevs.Worker.start_link(arg)
       # {Beevs.Worker, arg}
+      # Starts a worker for starting project cache
+      Supervisor.child_spec({Cachex, name: :beevs_project_cache},
+        id: :beevs_project_cache
+      )
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
