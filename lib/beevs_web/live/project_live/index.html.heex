@@ -8,7 +8,7 @@
 </.header>
 
 <%= if @streams.projects.inserts != [] do %>
-  <div id="projects" class="grid gap-3 grid-cols-1 sm:grid-cols-3 mt-8 " phx-update="stream">
+  <div id="projects" class="grid gap-3 grid-cols-1 sm:grid-cols-3 mt-8" phx-update="stream">
     <%= for {id, project} <- @streams.projects  do %>
       <.project_card navigate={~p"/projects/#{project.id}"}>
         <h5 class="font-semibold text-3xl font-mono">

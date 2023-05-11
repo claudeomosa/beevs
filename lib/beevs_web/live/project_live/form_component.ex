@@ -32,7 +32,13 @@ defmodule BeevsWeb.ProjectLive.FormComponent do
 
   @impl true
   def update(%{project: project} = assigns, socket) do
-    project_changeset = WorkSpaces.change_project(project)
+    attrs =
+      case Cachex.get(:beevs_project_cache, {__MODULE__, project.id}) do
+        {:ok, nil} -> %{}
+        {:ok, attrs} -> attrs
+      end
+
+    project_changeset = WorkSpaces.change_project(project, attrs) |> Map.put(:action, :validate)
 
     {:ok,
      socket
@@ -47,6 +53,14 @@ defmodule BeevsWeb.ProjectLive.FormComponent do
       socket.assigns.project
       |> WorkSpaces.change_project(project_params)
       |> Map.put(:action, :validate)
+
+    Cachex.put(:beevs_project_cache, {__MODULE__, socket.assigns.project.id}, project_params)
+
+    Cachex.expire(
+      :beevs_project_cache,
+      {__MODULE__, socket.assigns.project.id},
+      :timer.minutes(5)
+    )
 
     {:noreply, assign_form(socket, changeset)}
   end
