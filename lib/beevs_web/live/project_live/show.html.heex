@@ -81,41 +81,42 @@
 </.header>
 
 <hr class="my-6 bg-black dark:bg-white h-[1px] border-none" />
-
-<.table :if={@tasks_view == :table} id="tasks" rows={@project.tasks}>
-  <:col :let={task} label="Task Title">
-    <%= String.capitalize(task.task) %>
-  </:col>
-  <:col :let={task} label="Task Assignee">
-    <%= Beevs.Accounts.get_user!(task.user_id).email %>
-  </:col>
-  <:col :let={task} label="Task Status">
-    <%= case task.status do %>
-      <% "todo" -> %>
-        <span class="text-red-500 ">Todo</span>
-      <% "ongoing" -> %>
-        <span class="text-yellow-500">In Progress</span>
-      <% "completed" -> %>
-        <span class="text-green-500">Completed</span>
-      <% _ -> %>
-        <span class="text-gray-500">Unknown</span>
-    <% end %>
-  </:col>
-  <:action :let={task}>
-    <.link patch={~p"/projects/#{@project}/tasks/#{task}/edit"}>Edit</.link>
-  </:action>
-  <:action :let={task}>
-    <.link
-      phx-click={
-        JS.push("delete", value: %{task_id: task.id})
-        |> hide("##{task.id}")
-      }
-      data-confirm="Are you sure?"
-    >
-      Delete
-    </.link>
-  </:action>
-</.table>
+<div :if={@tasks_view == :table} class="min-h-[60vh]">
+  <.table id="tasks" rows={@project.tasks}>
+    <:col :let={task} label="Task Title">
+      <%= String.capitalize(task.task) %>
+    </:col>
+    <:col :let={task} label="Task Assignee">
+      <%= Beevs.Accounts.get_user!(task.user_id).email %>
+    </:col>
+    <:col :let={task} label="Task Status">
+      <%= case task.status do %>
+        <% "todo" -> %>
+          <span class="text-red-500 ">Todo</span>
+        <% "ongoing" -> %>
+          <span class="text-yellow-500">In Progress</span>
+        <% "completed" -> %>
+          <span class="text-green-500">Completed</span>
+        <% _ -> %>
+          <span class="text-gray-500">Unknown</span>
+      <% end %>
+    </:col>
+    <:action :let={task}>
+      <.link patch={~p"/projects/#{@project}/tasks/#{task}/edit"}>Edit</.link>
+    </:action>
+    <:action :let={task}>
+      <.link
+        phx-click={
+          JS.push("delete", value: %{task_id: task.id})
+          |> hide("##{task.id}")
+        }
+        data-confirm="Are you sure?"
+      >
+        Delete
+      </.link>
+    </:action>
+  </.table>
+</div>
 <%= if @tasks_view == :kanban do %>
   <div class="grid gap-2 grid-flow-col min-h-[60vh] grid-cols-3" id="drag">
     <.kanban_board task_status_zone_id="todo">

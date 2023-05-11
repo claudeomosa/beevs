@@ -231,7 +231,7 @@ defmodule BeevsWeb.CoreComponents do
   def simple_form(assigns) do
     ~H"""
     <.form :let={f} for={@for} as={@as} {@rest}>
-      <div class="space-y-8 bg-[#eee] dark:bg-[#2e4059] mt-10">
+      <div class="space-y-8 bg-slate-200 dark:bg-[#2e4059] mt-10">
         <%= render_slot(@inner_block, f) %>
         <div :for={action <- @actions} class="mt-2 flex items-center justify-between gap-6">
           <%= render_slot(action, f) %>
@@ -666,7 +666,7 @@ defmodule BeevsWeb.CoreComponents do
     <div
       draggable="true"
       class={[
-        "draggable p-4 text-white border mt-2 rounded dark:hover:bg-[#273654] h-auto",
+        "draggable p-4 dark:text-white border mt-2 rounded dark:hover:bg-[#273654] h-auto",
         @class
       ]}
       id={@id}
