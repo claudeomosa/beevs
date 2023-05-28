@@ -158,7 +158,9 @@ defmodule Beevs.WorkSpaces do
 
   """
   def list_tasks do
-    Repo.all(Task)
+    Task
+    |> Repo.all()
+    |> Repo.preload(:project)
   end
 
   @doc """
