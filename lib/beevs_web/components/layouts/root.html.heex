@@ -11,40 +11,17 @@
     <script defer phx-track-static type="text/javascript" src={~p"/assets/app.js"}>
     </script>
   </head>
-  <body class="bg-[#fff] dark:bg-[#212529] antialiased dark:text-[#e0e1dd]">
+  <body class="dark:bg-gray-900 bg-[#212529] antialiased dark:text-[#e0e1dd]">
     <%= if @current_user do %>
       <main class="sm:flex">
         <nav class="sm:w-[18%] items-center dark:bg-[#1b263b] h-screen bg-slate-200">
           <div class="profile-photo mt-10 ">
-            <%= if @current_user.avatar do %>
-              <img
-                src="https://brittanychiang.com/static/30a645f7db6038f83287d0c6042d3b2b/f9526/me.avif"
-                alt="user display image"
-                class="w-12 h-12 rounded-full mx-auto dark:bg-[#1b263b] "
-              />
-            <% else %>
-              <div class="w-24 h-24 mx-auto group relative  dark:bg-[#1b263b]">
-                <.link
-                  href={~p"/users/settings"}
-                  alt="add display image"
-                  class="dark:bg-[#1b263b]"
-                >
-                  <img
-                    src={~p"/images/empty_profile.jpg"}
-                    alt="add display image"
-                    class="cursor-pointer hover:opacity-80 dark:bg-[#1b263b] rounded-full"
-                  />
-                  <span class="group-hover:opacity-100 transition-opacity bg-gray-700 px-1 absolute text-sm text-black rounded-md left-0 top-0 opacity-0 mx-auto">
-                    Add your avatar image in settings
-                  </span>
-                </.link>
-              </div>
-            <% end %>
 
-            <h5 class="text-center mt-6 text-[1rem]">
-              <%= String.capitalize(@current_user.first_name) %> <%= String.capitalize(
-                @current_user.last_name
-              ) %>
+            <h5 class="text-left ml-6 mt-6 text-[1.5rem]">
+            Hello  <%= String.capitalize(@current_user.first_name) %> 
+            </h5>
+              <h5 class="text-left ml-6 text-[1rem] italic">
+            @<%= (@current_user.username) %> 
             </h5>
           </div>
           <hr class="my-4 w-11/12 mx-auto bg-black h-[2px]" />
@@ -71,50 +48,9 @@
                 <span class="ml-2 font-mono">Home</span>
               </.navlink>
             </li>
+            
             <li>
-              <.navlink navigate={~p"/"}>
-                <svg
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.5"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                  aria-hidden="true"
-                  class="w-6 h-6"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z"
-                  >
-                  </path>
-                </svg>
-                <span class="ml-2 font-mono">Chats</span>
-              </.navlink>
-            </li>
-            <li>
-              <.navlink navigate={~p"/"}>
-                <svg
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.5"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                  aria-hidden="true"
-                  class="w-6 h-6"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z"
-                  >
-                  </path>
-                </svg>
-                <span class="ml-2 font-mono">Teams</span>
-              </.navlink>
-            </li>
-            <li>
-              <.navlink navigate={~p"/"}>
+              <.navlink navigate={~p"/my_tasks"}>
                 <svg
                   fill="none"
                   stroke="currentColor"
@@ -200,6 +136,9 @@
         </div>
       </main>
     <% else %>
+ 
+
+
       <%= @inner_content %>
     <% end %>
   </body>

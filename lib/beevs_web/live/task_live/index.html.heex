@@ -1,0 +1,29 @@
+<.header>
+ My Tasks
+</.header>
+<div class="min-h-[60vh]">
+  <.table id="my_tasks" rows={@my_tasks}>
+    <:col :let={task} label="Task Title">
+      <%= String.capitalize(task.task) %>
+    </:col>
+    <:col :let={task} label="Task Project">
+      <%= String.capitalize(task.project.project_name)%>
+    </:col>
+    <:col :let={task} label="Task Status">
+      <%= case task.status do %>
+        <% "todo" -> %>
+          <span class="text-red-500 ">Todo</span>
+        <% "ongoing" -> %>
+          <span class="text-yellow-500">In Progress</span>
+        <% "completed" -> %>
+          <span class="text-green-500">Completed</span>
+        <% _ -> %>
+          <span class="text-gray-500">Unknown</span>
+      <% end %>
+    </:col>
+    <:action :let={task}>
+      <.link patch={~p"/projects/#{task.project.id}"}>View</.link>
+    </:action>
+   
+  </.table>
+</div>
