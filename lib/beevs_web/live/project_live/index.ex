@@ -45,6 +45,7 @@ defmodule BeevsWeb.ProjectLive.Index do
     |> assign(
       :collaborating_projects,
       Accounts.get_user!(socket.assigns.current_user.id).projects
+      |> Enum.filter(fn project -> project.user_id != socket.assigns.current_user.id end)
     )
   end
 

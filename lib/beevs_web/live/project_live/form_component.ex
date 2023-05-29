@@ -59,7 +59,7 @@ defmodule BeevsWeb.ProjectLive.FormComponent do
     Cachex.expire(
       :beevs_project_cache,
       {__MODULE__, socket.assigns.project.id},
-      :timer.minutes(5)
+      :timer.minutes(0)
     )
 
     {:noreply, assign_form(socket, changeset)}
