@@ -3,7 +3,7 @@
   <:subtitle>
     <%= String.capitalize(@project.project_description) %>
   </:subtitle>
-  <:actions>
+  <:actions :if={@project.user_id == @current_user.id}>
     <.link patch={~p"/projects/#{@project}/show/edit"} phx-click={JS.push_focus()}>
       <.button>Edit project</.button>
     </.link>
