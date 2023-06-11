@@ -34,10 +34,13 @@ defmodule BeevsWeb.TaskLive.FormComponent do
           label="Status"
           multiple={false}
           id="task-status"
-          options={[
+          options={if @action == :edit_task, do: [
             ToDo: "todo",
             Ongoing: "ongoing",
             Completed: "completed"
+          ], else: [
+            ToDo: "todo",
+            Ongoing: "ongoing",
           ]}
         >
         </.input>

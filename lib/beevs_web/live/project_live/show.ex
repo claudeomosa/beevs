@@ -53,16 +53,29 @@ defmodule BeevsWeb.ProjectLive.Show do
   end
 
   defp apply_action(socket, :edit_task, %{"task_id" => task_id}) do
+    task = WorkSpaces.get_task!(task_id)
+    project = WorkSpaces.get_project!(task.project_id)
+    assignee_options =
+      Enum.map(project.members, fn member ->
+        {member.email, member.id}
+      end)
+    assignee_options = [
+      {project.user.email, project.user.id}
+      | assignee_options
+    ]
     socket
     |> assign(:page_title, "Edit Task")
-    |> assign(:task, WorkSpaces.get_task!(task_id))
+    |> assign(:project, project)
+    |> assign(tasks_view: :table)
+    |> assign(:assignee_options, assignee_options)
+    |> assign(:task, task)
   end
 
   defp apply_action(socket, :edit_collaborators, %{"id" => id}) do
     socket
     |> assign(:page_title, "Collaborators")
     |> assign(:project, WorkSpaces.get_project!(id))
-    |> assign(tasks_view: :kanban)
+    |> assign(tasks_view: :table)
   end
 
   @impl true
