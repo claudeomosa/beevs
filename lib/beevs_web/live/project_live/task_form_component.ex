@@ -34,16 +34,35 @@ defmodule BeevsWeb.TaskLive.FormComponent do
           label="Status"
           multiple={false}
           id="task-status"
-          options={if @action == :edit_task, do: [
-            ToDo: "todo",
-            Ongoing: "ongoing",
-            Completed: "completed"
-          ], else: [
-            ToDo: "todo",
-            Ongoing: "ongoing",
-          ]}
+          options={
+            if @action == :edit_task,
+              do: [
+                ToDo: "todo",
+                Ongoing: "ongoing",
+                Completed: "completed"
+              ],
+              else: [
+                ToDo: "todo",
+                Ongoing: "ongoing"
+              ]
+          }
         >
         </.input>
+        <.input field={@form[:start_date]} type="date" label="Start Date" />
+        <.input field={@form[:due_date]} type="date" label="Due Date" />
+        <%!-- <.input field={@form[:priority]} type="number" label="Priority - [0 - LOW, 1 - MID, 2 - HIGH]" /> --%>
+        <.input
+          type="select"
+          label="Priority"
+          field={@form[:priority]}
+          multiple={false}
+          id="task-priority"
+          options={[
+            Low: 0,
+            Mid: 1,
+            High: 2
+          ]}
+        />
         <.input field={@form[:project_id]} type="hidden" value={@project.id} />
         <:actions>
           <.button phx-disable-with="Saving...">Save Task</.button>
