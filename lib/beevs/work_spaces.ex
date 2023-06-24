@@ -12,6 +12,8 @@ defmodule Beevs.WorkSpaces do
   alias Beevs.WorkSpaces.Message
   alias Beevs.WorkSpaces.Chatroom
   alias Beevs.WorkSpaces.DeletedProject
+  alias Beevs.WorkSpaces.DeletedTask
+
 
   @doc """
   Returns the list of projects.
@@ -238,7 +240,13 @@ defmodule Beevs.WorkSpaces do
 
   """
   def delete_task(%Task{} = task) do
-    Repo.delete(task)
+    task_assignee = Beevs.Accounts.get_user!(task.user_id).email
+    project_name = Beevs.WorkSpaces.get_project!(task.project_id).project_name
+#    Repo.delete(task)
+    Ecto.Multi.new()
+    |> Ecto.Multi.insert(:deleted_task, %DeletedTask{task_name: task.task, project_id: task.project_id, task_assignee: task_assignee, project_name: project_name})
+    |> Ecto.Multi.delete(:task, task)
+    |> Repo.transaction()
   end
 
   @doc """
@@ -512,5 +520,99 @@ defmodule Beevs.WorkSpaces do
   """
   def change_deleted_project(%DeletedProject{} = deleted_project, attrs \\ %{}) do
     DeletedProject.changeset(deleted_project, attrs)
+  end
+
+  @doc """
+  Returns the list of deleted_tasks.
+
+  ## Examples
+
+      iex> list_deleted_tasks()
+      [%DeletedTask{}, ...]
+
+  """
+  def list_deleted_tasks do
+    Repo.all(DeletedTask)
+  end
+
+  @doc """
+  Gets a single deleted_task.
+
+  Raises `Ecto.NoResultsError` if the Deleted task does not exist.
+
+  ## Examples
+
+      iex> get_deleted_task!(123)
+      %DeletedTask{}
+
+      iex> get_deleted_task!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_deleted_task!(id), do: Repo.get!(DeletedTask, id)
+
+  @doc """
+  Creates a deleted_task.
+
+  ## Examples
+
+      iex> create_deleted_task(%{field: value})
+      {:ok, %DeletedTask{}}
+
+      iex> create_deleted_task(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_deleted_task(attrs \\ %{}) do
+    %DeletedTask{}
+    |> DeletedTask.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a deleted_task.
+
+  ## Examples
+
+      iex> update_deleted_task(deleted_task, %{field: new_value})
+      {:ok, %DeletedTask{}}
+
+      iex> update_deleted_task(deleted_task, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_deleted_task(%DeletedTask{} = deleted_task, attrs) do
+    deleted_task
+    |> DeletedTask.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a deleted_task.
+
+  ## Examples
+
+      iex> delete_deleted_task(deleted_task)
+      {:ok, %DeletedTask{}}
+
+      iex> delete_deleted_task(deleted_task)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_deleted_task(%DeletedTask{} = deleted_task) do
+    Repo.delete(deleted_task)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking deleted_task changes.
+
+  ## Examples
+
+      iex> change_deleted_task(deleted_task)
+      %Ecto.Changeset{data: %DeletedTask{}}
+
+  """
+  def change_deleted_task(%DeletedTask{} = deleted_task, attrs \\ %{}) do
+    DeletedTask.changeset(deleted_task, attrs)
   end
 end

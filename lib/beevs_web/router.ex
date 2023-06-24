@@ -83,11 +83,8 @@ defmodule BeevsWeb.Router do
       live "/my_tasks", TaskLive.Index, :index
 
       live "/deleted_projects", DeletedProjectLive.Index, :index
-      live "/deleted_projects/new", DeletedProjectLive.Index, :new
-      live "/deleted_projects/:id/edit", DeletedProjectLive.Index, :edit
-      live "/deleted_projects/:id", DeletedProjectLive.Show, :show
-      live "/deleted_projects/:id/show/edit", DeletedProjectLive.Show, :edit
 
+      live "/deleted_tasks", DeletedTaskLive.Index, :index
     end
   end
 

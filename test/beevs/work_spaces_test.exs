@@ -225,4 +225,56 @@ defmodule Beevs.WorkSpacesTest do
       assert %Ecto.Changeset{} = WorkSpaces.change_deleted_project(deleted_project)
     end
   end
+
+  describe "deleted_tasks" do
+    alias Beevs.WorkSpaces.DeletedTask
+
+    import Beevs.WorkSpacesFixtures
+
+    @invalid_attrs %{}
+
+    test "list_deleted_tasks/0 returns all deleted_tasks" do
+      deleted_task = deleted_task_fixture()
+      assert WorkSpaces.list_deleted_tasks() == [deleted_task]
+    end
+
+    test "get_deleted_task!/1 returns the deleted_task with given id" do
+      deleted_task = deleted_task_fixture()
+      assert WorkSpaces.get_deleted_task!(deleted_task.id) == deleted_task
+    end
+
+    test "create_deleted_task/1 with valid data creates a deleted_task" do
+      valid_attrs = %{}
+
+      assert {:ok, %DeletedTask{} = deleted_task} = WorkSpaces.create_deleted_task(valid_attrs)
+    end
+
+    test "create_deleted_task/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = WorkSpaces.create_deleted_task(@invalid_attrs)
+    end
+
+    test "update_deleted_task/2 with valid data updates the deleted_task" do
+      deleted_task = deleted_task_fixture()
+      update_attrs = %{}
+
+      assert {:ok, %DeletedTask{} = deleted_task} = WorkSpaces.update_deleted_task(deleted_task, update_attrs)
+    end
+
+    test "update_deleted_task/2 with invalid data returns error changeset" do
+      deleted_task = deleted_task_fixture()
+      assert {:error, %Ecto.Changeset{}} = WorkSpaces.update_deleted_task(deleted_task, @invalid_attrs)
+      assert deleted_task == WorkSpaces.get_deleted_task!(deleted_task.id)
+    end
+
+    test "delete_deleted_task/1 deletes the deleted_task" do
+      deleted_task = deleted_task_fixture()
+      assert {:ok, %DeletedTask{}} = WorkSpaces.delete_deleted_task(deleted_task)
+      assert_raise Ecto.NoResultsError, fn -> WorkSpaces.get_deleted_task!(deleted_task.id) end
+    end
+
+    test "change_deleted_task/1 returns a deleted_task changeset" do
+      deleted_task = deleted_task_fixture()
+      assert %Ecto.Changeset{} = WorkSpaces.change_deleted_task(deleted_task)
+    end
+  end
 end

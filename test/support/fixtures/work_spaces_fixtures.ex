@@ -61,4 +61,18 @@ defmodule Beevs.WorkSpacesFixtures do
 
     deleted_project
   end
+
+  @doc """
+  Generate a deleted_task.
+  """
+  def deleted_task_fixture(attrs \\ %{}) do
+    {:ok, deleted_task} =
+      attrs
+      |> Enum.into(%{
+
+      })
+      |> Beevs.WorkSpaces.create_deleted_task()
+
+    deleted_task
+  end
 end
