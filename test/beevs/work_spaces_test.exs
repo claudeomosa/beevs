@@ -173,4 +173,56 @@ defmodule Beevs.WorkSpacesTest do
       assert %Ecto.Changeset{} = WorkSpaces.change_project_file(project_file)
     end
   end
+
+  describe "deleted_projects" do
+    alias Beevs.WorkSpaces.DeletedProject
+
+    import Beevs.WorkSpacesFixtures
+
+    @invalid_attrs %{}
+
+    test "list_deleted_projects/0 returns all deleted_projects" do
+      deleted_project = deleted_project_fixture()
+      assert WorkSpaces.list_deleted_projects() == [deleted_project]
+    end
+
+    test "get_deleted_project!/1 returns the deleted_project with given id" do
+      deleted_project = deleted_project_fixture()
+      assert WorkSpaces.get_deleted_project!(deleted_project.id) == deleted_project
+    end
+
+    test "create_deleted_project/1 with valid data creates a deleted_project" do
+      valid_attrs = %{}
+
+      assert {:ok, %DeletedProject{} = deleted_project} = WorkSpaces.create_deleted_project(valid_attrs)
+    end
+
+    test "create_deleted_project/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = WorkSpaces.create_deleted_project(@invalid_attrs)
+    end
+
+    test "update_deleted_project/2 with valid data updates the deleted_project" do
+      deleted_project = deleted_project_fixture()
+      update_attrs = %{}
+
+      assert {:ok, %DeletedProject{} = deleted_project} = WorkSpaces.update_deleted_project(deleted_project, update_attrs)
+    end
+
+    test "update_deleted_project/2 with invalid data returns error changeset" do
+      deleted_project = deleted_project_fixture()
+      assert {:error, %Ecto.Changeset{}} = WorkSpaces.update_deleted_project(deleted_project, @invalid_attrs)
+      assert deleted_project == WorkSpaces.get_deleted_project!(deleted_project.id)
+    end
+
+    test "delete_deleted_project/1 deletes the deleted_project" do
+      deleted_project = deleted_project_fixture()
+      assert {:ok, %DeletedProject{}} = WorkSpaces.delete_deleted_project(deleted_project)
+      assert_raise Ecto.NoResultsError, fn -> WorkSpaces.get_deleted_project!(deleted_project.id) end
+    end
+
+    test "change_deleted_project/1 returns a deleted_project changeset" do
+      deleted_project = deleted_project_fixture()
+      assert %Ecto.Changeset{} = WorkSpaces.change_deleted_project(deleted_project)
+    end
+  end
 end

@@ -80,8 +80,14 @@ defmodule BeevsWeb.Router do
       live "/projects/:id/chatroom", ProjectLive.Chat, :chatroom
       live "/projects/:id/project_files", ProjectLive.Show, :project_files
 
-
       live "/my_tasks", TaskLive.Index, :index
+
+      live "/deleted_projects", DeletedProjectLive.Index, :index
+      live "/deleted_projects/new", DeletedProjectLive.Index, :new
+      live "/deleted_projects/:id/edit", DeletedProjectLive.Index, :edit
+      live "/deleted_projects/:id", DeletedProjectLive.Show, :show
+      live "/deleted_projects/:id/show/edit", DeletedProjectLive.Show, :edit
+
     end
   end
 

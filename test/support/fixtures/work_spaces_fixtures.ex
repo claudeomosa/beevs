@@ -47,4 +47,18 @@ defmodule Beevs.WorkSpacesFixtures do
 
     project_file
   end
+
+  @doc """
+  Generate a deleted_project.
+  """
+  def deleted_project_fixture(attrs \\ %{}) do
+    {:ok, deleted_project} =
+      attrs
+      |> Enum.into(%{
+
+      })
+      |> Beevs.WorkSpaces.create_deleted_project()
+
+    deleted_project
+  end
 end

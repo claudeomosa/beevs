@@ -11,6 +11,7 @@ defmodule Beevs.WorkSpaces do
   alias Beevs.WorkSpaces.Task
   alias Beevs.WorkSpaces.Message
   alias Beevs.WorkSpaces.Chatroom
+  alias Beevs.WorkSpaces.DeletedProject
 
   @doc """
   Returns the list of projects.
@@ -133,7 +134,11 @@ defmodule Beevs.WorkSpaces do
 
   """
   def delete_project(%Project{} = project) do
-    Repo.delete(project)
+#    Repo.delete(project)
+    Ecto.Multi.new()
+    |> Ecto.Multi.insert(:deleted_project, %DeletedProject{project_name: project.project_name, user_id: project.user_id, project_description: project.project_description})
+    |> Ecto.Multi.delete(:project, project)
+    |> Repo.transaction()
   end
 
   @doc """
@@ -412,5 +417,100 @@ defmodule Beevs.WorkSpaces do
   """
   def change_project_file(%ProjectFile{} = project_file, attrs \\ %{}) do
     ProjectFile.changeset(project_file, attrs)
+  end
+
+
+  @doc """
+  Returns the list of deleted_projects.
+
+  ## Examples
+
+      iex> list_deleted_projects()
+      [%DeletedProject{}, ...]
+
+  """
+  def list_deleted_projects do
+    Repo.all(DeletedProject)
+  end
+
+  @doc """
+  Gets a single deleted_project.
+
+  Raises `Ecto.NoResultsError` if the Deleted project does not exist.
+
+  ## Examples
+
+      iex> get_deleted_project!(123)
+      %DeletedProject{}
+
+      iex> get_deleted_project!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_deleted_project!(id), do: Repo.get!(DeletedProject, id)
+
+  @doc """
+  Creates a deleted_project.
+
+  ## Examples
+
+      iex> create_deleted_project(%{field: value})
+      {:ok, %DeletedProject{}}
+
+      iex> create_deleted_project(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_deleted_project(attrs \\ %{}) do
+    %DeletedProject{}
+    |> DeletedProject.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a deleted_project.
+
+  ## Examples
+
+      iex> update_deleted_project(deleted_project, %{field: new_value})
+      {:ok, %DeletedProject{}}
+
+      iex> update_deleted_project(deleted_project, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_deleted_project(%DeletedProject{} = deleted_project, attrs) do
+    deleted_project
+    |> DeletedProject.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a deleted_project.
+
+  ## Examples
+
+      iex> delete_deleted_project(deleted_project)
+      {:ok, %DeletedProject{}}
+
+      iex> delete_deleted_project(deleted_project)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_deleted_project(%DeletedProject{} = deleted_project) do
+    Repo.delete(deleted_project)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking deleted_project changes.
+
+  ## Examples
+
+      iex> change_deleted_project(deleted_project)
+      %Ecto.Changeset{data: %DeletedProject{}}
+
+  """
+  def change_deleted_project(%DeletedProject{} = deleted_project, attrs \\ %{}) do
+    DeletedProject.changeset(deleted_project, attrs)
   end
 end
