@@ -11,7 +11,7 @@ defmodule Beevs.Accounts.UserNotifier do
     email =
       new()
       |> to(recipient)
-      |> from({"Beevs", "contact@example.com"})
+      |> from({"Beevs", "claudeomosa@gmail.com"})
       |> subject(subject)
       |> text_body(body)
 
@@ -79,4 +79,5 @@ defmodule Beevs.Accounts.UserNotifier do
     ==============================
     """)
   end
+
 end

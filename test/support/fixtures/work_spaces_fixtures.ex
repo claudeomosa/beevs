@@ -33,4 +33,18 @@ defmodule Beevs.WorkSpacesFixtures do
 
     task
   end
+
+  @doc """
+  Generate a project_file.
+  """
+  def project_file_fixture(attrs \\ %{}) do
+    {:ok, project_file} =
+      attrs
+      |> Enum.into(%{
+        description: "some description"
+      })
+      |> Beevs.WorkSpaces.create_project_file()
+
+    project_file
+  end
 end

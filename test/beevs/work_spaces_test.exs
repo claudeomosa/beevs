@@ -119,4 +119,58 @@ defmodule Beevs.WorkSpacesTest do
       assert %Ecto.Changeset{} = WorkSpaces.change_task(task)
     end
   end
+
+  describe "project_files" do
+    alias Beevs.WorkSpaces.ProjectFile
+
+    import Beevs.WorkSpacesFixtures
+
+    @invalid_attrs %{description: nil}
+
+    test "list_project_files/0 returns all project_files" do
+      project_file = project_file_fixture()
+      assert WorkSpaces.list_project_files() == [project_file]
+    end
+
+    test "get_project_file!/1 returns the project_file with given id" do
+      project_file = project_file_fixture()
+      assert WorkSpaces.get_project_file!(project_file.id) == project_file
+    end
+
+    test "create_project_file/1 with valid data creates a project_file" do
+      valid_attrs = %{description: "some description"}
+
+      assert {:ok, %ProjectFile{} = project_file} = WorkSpaces.create_project_file(valid_attrs)
+      assert project_file.description == "some description"
+    end
+
+    test "create_project_file/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = WorkSpaces.create_project_file(@invalid_attrs)
+    end
+
+    test "update_project_file/2 with valid data updates the project_file" do
+      project_file = project_file_fixture()
+      update_attrs = %{description: "some updated description"}
+
+      assert {:ok, %ProjectFile{} = project_file} = WorkSpaces.update_project_file(project_file, update_attrs)
+      assert project_file.description == "some updated description"
+    end
+
+    test "update_project_file/2 with invalid data returns error changeset" do
+      project_file = project_file_fixture()
+      assert {:error, %Ecto.Changeset{}} = WorkSpaces.update_project_file(project_file, @invalid_attrs)
+      assert project_file == WorkSpaces.get_project_file!(project_file.id)
+    end
+
+    test "delete_project_file/1 deletes the project_file" do
+      project_file = project_file_fixture()
+      assert {:ok, %ProjectFile{}} = WorkSpaces.delete_project_file(project_file)
+      assert_raise Ecto.NoResultsError, fn -> WorkSpaces.get_project_file!(project_file.id) end
+    end
+
+    test "change_project_file/1 returns a project_file changeset" do
+      project_file = project_file_fixture()
+      assert %Ecto.Changeset{} = WorkSpaces.change_project_file(project_file)
+    end
+  end
 end

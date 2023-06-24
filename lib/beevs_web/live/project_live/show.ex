@@ -4,6 +4,7 @@ defmodule BeevsWeb.ProjectLive.Show do
   alias Beevs.Accounts
   alias Beevs.WorkSpaces
   alias Beevs.WorkSpaces.Task
+  alias Beevs.WorkSpaces.ProjectFile
 
   @impl true
   def mount(_params, _session, socket) do
@@ -79,6 +80,20 @@ defmodule BeevsWeb.ProjectLive.Show do
     |> assign(:page_title, "Collaborators")
     |> assign(:project, WorkSpaces.get_project!(id))
     |> assign(tasks_view: :table)
+  end
+
+  defp apply_action(socket, :project_files, %{"id" => id}) do
+    project_files = WorkSpaces.list_project_files()
+                    |> Enum.filter(fn project_file ->
+                      project_file.project_id == id
+                    end)
+    socket
+    |> assign(:page_title, "Project Files")
+    |> assign(:project_file, %ProjectFile{})
+    |> assign(:project, WorkSpaces.get_project!(id))
+    |> assign(tasks_view: :table)
+    |> assign(:project_files, project_files)
+    |> allow_upload(:project_file, accept: ~w(.pdf .doc .docx .ppt .pptx .txt .png .jpg .jpeg .zip .rar .tar .gz .7z), max_entries: 2)
   end
 
   @impl true

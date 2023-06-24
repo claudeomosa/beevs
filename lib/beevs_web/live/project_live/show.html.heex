@@ -62,6 +62,12 @@
   </div>
 
   <:actions>
+    <.link navigate={~p"/projects/#{@project}/project_files"}>
+      <.button>Project Files</.button>
+    </.link>
+  </:actions>
+
+  <:actions>
     <.link navigate={~p"/projects/#{@project}/chatroom"}>
       <.button>Chat room</.button>
     </.link>
@@ -384,5 +390,25 @@
     patch={~p"/projects/#{@project}"}
     current_user={@current_user}
     after_add_patch={~p"/projects/#{@project}/collaborators"}
+  />
+</.modal>
+
+<.modal
+  :if={@live_action == :project_files}
+  id="project-files-modal"
+  show
+  on_cancel={JS.patch(~p"/projects/#{@project}")}
+>
+  <.live_component
+    module={BeevsWeb.ProjectLive.FileComponent}
+    id={@project.id}
+    title={@page_title}
+    action={@live_action}
+    project={@project}
+    patch={~p"/projects/#{@project}"}
+    current_user={@current_user}
+    project_file={@project_file}
+    file_upload={@uploads}
+    after_add_patch={~p"/projects/#{@project}/project_files"}
   />
 </.modal>

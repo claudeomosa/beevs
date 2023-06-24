@@ -45,6 +45,7 @@ defmodule Beevs.WorkSpaces do
     |> Repo.preload(:tasks)
     |> Repo.preload(:user)
     |> Repo.preload(:members)
+    |> Repo.preload(:project_files)
     |> Repo.preload(chatroom: [messages: [:user]])
   end
 
@@ -315,5 +316,101 @@ defmodule Beevs.WorkSpaces do
     %Message{}
     |> Message.changeset(attrs)
     |> Repo.insert()
+  end
+
+  alias Beevs.WorkSpaces.ProjectFile
+
+  @doc """
+  Returns the list of project_files.
+
+  ## Examples
+
+      iex> list_project_files()
+      [%ProjectFile{}, ...]
+
+  """
+  def list_project_files do
+    Repo.all(ProjectFile)
+  end
+
+  @doc """
+  Gets a single project_file.
+
+  Raises `Ecto.NoResultsError` if the Project file does not exist.
+
+  ## Examples
+
+      iex> get_project_file!(123)
+      %ProjectFile{}
+
+      iex> get_project_file!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_project_file!(id), do: Repo.get!(ProjectFile, id)
+
+  @doc """
+  Creates a project_file.
+
+  ## Examples
+
+      iex> create_project_file(%{field: value})
+      {:ok, %ProjectFile{}}
+
+      iex> create_project_file(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_project_file(attrs \\ %{}) do
+    %ProjectFile{}
+    |> ProjectFile.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a project_file.
+
+  ## Examples
+
+      iex> update_project_file(project_file, %{field: new_value})
+      {:ok, %ProjectFile{}}
+
+      iex> update_project_file(project_file, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_project_file(%ProjectFile{} = project_file, attrs) do
+    project_file
+    |> ProjectFile.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a project_file.
+
+  ## Examples
+
+      iex> delete_project_file(project_file)
+      {:ok, %ProjectFile{}}
+
+      iex> delete_project_file(project_file)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_project_file(%ProjectFile{} = project_file) do
+    Repo.delete(project_file)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking project_file changes.
+
+  ## Examples
+
+      iex> change_project_file(project_file)
+      %Ecto.Changeset{data: %ProjectFile{}}
+
+  """
+  def change_project_file(%ProjectFile{} = project_file, attrs \\ %{}) do
+    ProjectFile.changeset(project_file, attrs)
   end
 end
