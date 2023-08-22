@@ -55,7 +55,8 @@ defmodule Beevs.MixProject do
       {:mnemonic_slugs, "~> 0.0.3"},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
       {:sobelow, "~> 0.12", only: [:dev, :test], runtime: false},
-      {:cachex, "~> 3.6"}
+      {:cachex, "~> 3.6"},
+      {:mail, "~> 0.2"},
     ]
   end
 

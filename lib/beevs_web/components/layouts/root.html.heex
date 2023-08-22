@@ -16,12 +16,11 @@
       <main class="sm:flex">
         <nav class="sm:w-[18%] items-center dark:bg-[#1b263b] h-screen bg-slate-200">
           <div class="profile-photo mt-10 ">
-
             <h5 class="text-left ml-6 mt-6 text-[1.5rem]">
-            Hello  <%= String.capitalize(@current_user.first_name) %> 
+              Hello <%= String.capitalize(@current_user.first_name) %>
             </h5>
-              <h5 class="text-left ml-6 text-[1rem] italic">
-            @<%= (@current_user.username) %> 
+            <h5 class="text-left ml-6 text-[1rem] italic">
+              @<%= @current_user.username %>
             </h5>
           </div>
           <hr class="my-4 w-11/12 mx-auto bg-black h-[2px]" />
@@ -48,7 +47,7 @@
                 <span class="ml-2 font-mono">Home</span>
               </.navlink>
             </li>
-            
+
             <li>
               <.navlink navigate={~p"/my_tasks"}>
                 <svg
@@ -136,9 +135,6 @@
         </div>
       </main>
     <% else %>
- 
-
-
       <%= @inner_content %>
     <% end %>
   </body>

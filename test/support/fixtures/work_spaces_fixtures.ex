@@ -33,4 +33,46 @@ defmodule Beevs.WorkSpacesFixtures do
 
     task
   end
+
+  @doc """
+  Generate a project_file.
+  """
+  def project_file_fixture(attrs \\ %{}) do
+    {:ok, project_file} =
+      attrs
+      |> Enum.into(%{
+        description: "some description"
+      })
+      |> Beevs.WorkSpaces.create_project_file()
+
+    project_file
+  end
+
+  @doc """
+  Generate a deleted_project.
+  """
+  def deleted_project_fixture(attrs \\ %{}) do
+    {:ok, deleted_project} =
+      attrs
+      |> Enum.into(%{
+
+      })
+      |> Beevs.WorkSpaces.create_deleted_project()
+
+    deleted_project
+  end
+
+  @doc """
+  Generate a deleted_task.
+  """
+  def deleted_task_fixture(attrs \\ %{}) do
+    {:ok, deleted_task} =
+      attrs
+      |> Enum.into(%{
+
+      })
+      |> Beevs.WorkSpaces.create_deleted_task()
+
+    deleted_task
+  end
 end

@@ -119,4 +119,162 @@ defmodule Beevs.WorkSpacesTest do
       assert %Ecto.Changeset{} = WorkSpaces.change_task(task)
     end
   end
+
+  describe "project_files" do
+    alias Beevs.WorkSpaces.ProjectFile
+
+    import Beevs.WorkSpacesFixtures
+
+    @invalid_attrs %{description: nil}
+
+    test "list_project_files/0 returns all project_files" do
+      project_file = project_file_fixture()
+      assert WorkSpaces.list_project_files() == [project_file]
+    end
+
+    test "get_project_file!/1 returns the project_file with given id" do
+      project_file = project_file_fixture()
+      assert WorkSpaces.get_project_file!(project_file.id) == project_file
+    end
+
+    test "create_project_file/1 with valid data creates a project_file" do
+      valid_attrs = %{description: "some description"}
+
+      assert {:ok, %ProjectFile{} = project_file} = WorkSpaces.create_project_file(valid_attrs)
+      assert project_file.description == "some description"
+    end
+
+    test "create_project_file/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = WorkSpaces.create_project_file(@invalid_attrs)
+    end
+
+    test "update_project_file/2 with valid data updates the project_file" do
+      project_file = project_file_fixture()
+      update_attrs = %{description: "some updated description"}
+
+      assert {:ok, %ProjectFile{} = project_file} = WorkSpaces.update_project_file(project_file, update_attrs)
+      assert project_file.description == "some updated description"
+    end
+
+    test "update_project_file/2 with invalid data returns error changeset" do
+      project_file = project_file_fixture()
+      assert {:error, %Ecto.Changeset{}} = WorkSpaces.update_project_file(project_file, @invalid_attrs)
+      assert project_file == WorkSpaces.get_project_file!(project_file.id)
+    end
+
+    test "delete_project_file/1 deletes the project_file" do
+      project_file = project_file_fixture()
+      assert {:ok, %ProjectFile{}} = WorkSpaces.delete_project_file(project_file)
+      assert_raise Ecto.NoResultsError, fn -> WorkSpaces.get_project_file!(project_file.id) end
+    end
+
+    test "change_project_file/1 returns a project_file changeset" do
+      project_file = project_file_fixture()
+      assert %Ecto.Changeset{} = WorkSpaces.change_project_file(project_file)
+    end
+  end
+
+  describe "deleted_projects" do
+    alias Beevs.WorkSpaces.DeletedProject
+
+    import Beevs.WorkSpacesFixtures
+
+    @invalid_attrs %{}
+
+    test "list_deleted_projects/0 returns all deleted_projects" do
+      deleted_project = deleted_project_fixture()
+      assert WorkSpaces.list_deleted_projects() == [deleted_project]
+    end
+
+    test "get_deleted_project!/1 returns the deleted_project with given id" do
+      deleted_project = deleted_project_fixture()
+      assert WorkSpaces.get_deleted_project!(deleted_project.id) == deleted_project
+    end
+
+    test "create_deleted_project/1 with valid data creates a deleted_project" do
+      valid_attrs = %{}
+
+      assert {:ok, %DeletedProject{} = deleted_project} = WorkSpaces.create_deleted_project(valid_attrs)
+    end
+
+    test "create_deleted_project/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = WorkSpaces.create_deleted_project(@invalid_attrs)
+    end
+
+    test "update_deleted_project/2 with valid data updates the deleted_project" do
+      deleted_project = deleted_project_fixture()
+      update_attrs = %{}
+
+      assert {:ok, %DeletedProject{} = deleted_project} = WorkSpaces.update_deleted_project(deleted_project, update_attrs)
+    end
+
+    test "update_deleted_project/2 with invalid data returns error changeset" do
+      deleted_project = deleted_project_fixture()
+      assert {:error, %Ecto.Changeset{}} = WorkSpaces.update_deleted_project(deleted_project, @invalid_attrs)
+      assert deleted_project == WorkSpaces.get_deleted_project!(deleted_project.id)
+    end
+
+    test "delete_deleted_project/1 deletes the deleted_project" do
+      deleted_project = deleted_project_fixture()
+      assert {:ok, %DeletedProject{}} = WorkSpaces.delete_deleted_project(deleted_project)
+      assert_raise Ecto.NoResultsError, fn -> WorkSpaces.get_deleted_project!(deleted_project.id) end
+    end
+
+    test "change_deleted_project/1 returns a deleted_project changeset" do
+      deleted_project = deleted_project_fixture()
+      assert %Ecto.Changeset{} = WorkSpaces.change_deleted_project(deleted_project)
+    end
+  end
+
+  describe "deleted_tasks" do
+    alias Beevs.WorkSpaces.DeletedTask
+
+    import Beevs.WorkSpacesFixtures
+
+    @invalid_attrs %{}
+
+    test "list_deleted_tasks/0 returns all deleted_tasks" do
+      deleted_task = deleted_task_fixture()
+      assert WorkSpaces.list_deleted_tasks() == [deleted_task]
+    end
+
+    test "get_deleted_task!/1 returns the deleted_task with given id" do
+      deleted_task = deleted_task_fixture()
+      assert WorkSpaces.get_deleted_task!(deleted_task.id) == deleted_task
+    end
+
+    test "create_deleted_task/1 with valid data creates a deleted_task" do
+      valid_attrs = %{}
+
+      assert {:ok, %DeletedTask{} = deleted_task} = WorkSpaces.create_deleted_task(valid_attrs)
+    end
+
+    test "create_deleted_task/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = WorkSpaces.create_deleted_task(@invalid_attrs)
+    end
+
+    test "update_deleted_task/2 with valid data updates the deleted_task" do
+      deleted_task = deleted_task_fixture()
+      update_attrs = %{}
+
+      assert {:ok, %DeletedTask{} = deleted_task} = WorkSpaces.update_deleted_task(deleted_task, update_attrs)
+    end
+
+    test "update_deleted_task/2 with invalid data returns error changeset" do
+      deleted_task = deleted_task_fixture()
+      assert {:error, %Ecto.Changeset{}} = WorkSpaces.update_deleted_task(deleted_task, @invalid_attrs)
+      assert deleted_task == WorkSpaces.get_deleted_task!(deleted_task.id)
+    end
+
+    test "delete_deleted_task/1 deletes the deleted_task" do
+      deleted_task = deleted_task_fixture()
+      assert {:ok, %DeletedTask{}} = WorkSpaces.delete_deleted_task(deleted_task)
+      assert_raise Ecto.NoResultsError, fn -> WorkSpaces.get_deleted_task!(deleted_task.id) end
+    end
+
+    test "change_deleted_task/1 returns a deleted_task changeset" do
+      deleted_task = deleted_task_fixture()
+      assert %Ecto.Changeset{} = WorkSpaces.change_deleted_task(deleted_task)
+    end
+  end
 end

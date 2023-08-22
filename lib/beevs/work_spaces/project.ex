@@ -11,6 +11,7 @@ defmodule Beevs.WorkSpaces.Project do
     field(:project_description, :string)
     has_one(:chatroom, Beevs.WorkSpaces.Chatroom, on_delete: :delete_all)
     has_many(:tasks, Beevs.WorkSpaces.Task, on_delete: :delete_all)
+    has_many(:project_files, Beevs.WorkSpaces.ProjectFile, on_delete: :delete_all)
 
     many_to_many(:members, Beevs.Accounts.User,
       join_through: Beevs.WorkSpaces.ProjectMember,

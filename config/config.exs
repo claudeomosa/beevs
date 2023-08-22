@@ -27,7 +27,7 @@ config :beevs, BeevsWeb.Endpoint,
 #
 # For production it's recommended to configure a different adapter
 # at the `config/runtime.exs`.
-config :beevs, Beevs.Mailer, adapter: Swoosh.Adapters.Local
+config :beevs, Beevs.Mailer, adapter: Swoosh.Adapters.Gmail, access_token: {:system, "ya29.a0AWY7CkmUCj9oCn7OSkipf2c3YdSJAwwjXeUpC0yWUmsGft9UdgwxzapMJ_4AP5KCh-J-1MoEJMh_HkxmFCz3IuHCZ-okGxqDg7rC2VyFni1iF2Au3025hhCWKBaGcvY7DYK3dorhTuPQ7re3lX49yKkQ-ZC8aCgYKAecSARMSFQG1tDrpSZcHTjw8kS_4aGogkY8yug0163"}
 
 # Configure esbuild (the version is required)
 config :esbuild,
