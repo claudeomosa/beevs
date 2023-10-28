@@ -89,7 +89,6 @@ defmodule BeevsWeb.ProjectLive.Show do
                     end)
     socket
     |> assign(:page_title, "Project Files")
-    |> assign(:project_file, %ProjectFile{})
     |> assign(:project, WorkSpaces.get_project!(id))
     |> assign(tasks_view: :table)
     |> assign(:project_files, project_files)
